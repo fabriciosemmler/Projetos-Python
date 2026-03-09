@@ -32,10 +32,19 @@ async def obter_sessao():
     return next((s for s in sessoes if s.source_app_user_model_id == DEEZER_ID), None)
 
 async def executar_contagem():
-    sessao = await obter_sessao()
-    if not sessao:
-        print("❌ Deezer não detectado.")
-        return
+    # --- AJUSTE CIRÚRGICO: AGUARDANDO A PRIMEIRA MÚSICA ---
+    print("⏳ Aguardando Deezer e início da música...")
+    sessao = None
+    while True:
+        sessao = await obter_sessao()
+        if sessao:
+            try:
+                info = await sessao.try_get_media_properties_async()
+                if info.title: # Só sai do loop quando houver uma música carregada
+                    break
+            except:
+                pass
+        await asyncio.sleep(2)
 
     # --- FASE 1: MONITORAMENTO DAS TROCAS ---
     info = await sessao.try_get_media_properties_async()
@@ -57,28 +66,21 @@ async def executar_contagem():
 
     # --- FASE 2: VIGÍLIA ATIVA (A 3ª MÚSICA) ---
     print("⏳ Iniciando Vigília Ativa na 3ª música...")
-    
     while True:
-        await asyncio.sleep(2) # Espia o relógio a cada 2 segundos
+        await asyncio.sleep(2)
         try:
             timeline = sessao.get_timeline_properties()
-            
             total = timeline.end_time.total_seconds()
             atual = timeline.position.total_seconds()
             restante = total - atual
 
-            # Se a música estiver quase acabando (menos de 4 segundos)
             if restante <= 4:
-                # Se ainda houver um fôlego, faz o ajuste fino final
                 if restante > 0.5:
                     await asyncio.sleep(restante - 0.3)
                 
-                # O Bote: Pausa exatamente no fim
                 await sessao.try_toggle_play_pause_async()
                 exibir_aviso_grande("⏸️ 3 Músicas! Pausado.")
                 break
-                
-            print(f"DEBUG: Falta {restante:.1f}s") # Ative se quiser ver o log
         except:
             continue
 
