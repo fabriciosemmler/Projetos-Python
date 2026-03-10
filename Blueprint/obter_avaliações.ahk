@@ -62,22 +62,31 @@ F11:: {
             Sleep(2500) ; Espera 3 segundos para a lista de avaliações carregar na tela
 
             ; ==========================================
-            ; NOVIDADE 3: Motor de Rolagem Dinâmico
+            ; NOVIDADE 3: Motor de Rolagem Dinâmico (Com Validação)
             ; ==========================================
+            contador_fundo := 0 ; Inicia o contador zerado para cada novo local
+
             Loop {
                 Send("{WheelDown 10}") 
-                Sleep(800) ; Aguarda a rolagem e o possível carregamento
+                Sleep(800) ; Aguarda a rolagem
 
                 ; Lê a cor na coordenada de controle do fundo
                 cor_atual := PixelGetColor(835, 1024)
                 
-                ; Se a cor for o cinza escuro, chegamos ao fundo. Interrompe a rolagem.
+                ; Se a cor for o cinza escuro, soma 1 no contador de confirmação
                 if (cor_atual = 0x5E5E5E) {
+                    contador_fundo++ 
+                } else {
+                    ; Se qualquer outra cor aparecer (ex: carregou mais avaliações), zera a contagem
+                    contador_fundo := 0 
+                }
+                
+                ; Se o cinza escuro se mantiver por 5 ciclos seguidos, a página realmente acabou
+                if (contador_fundo >= 5) {
                     break
                 }
                 
-                ; Trava de segurança elegante: se o Google travar ou a cor mudar, 
-                ; o robô não fica rolando para sempre. Limite máximo de 300 rolagens por local.
+                ; Trava de segurança limite máximo de 300 rolagens totais
                 if (A_Index > 300) {
                     break
                 }
