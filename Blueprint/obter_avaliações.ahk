@@ -13,6 +13,13 @@ F11:: {
     ; 2. Lê o arquivo e fatia as linhas
     texto_completo := FileRead("lista_concorrentes.txt", "UTF-8")
     linhas := StrSplit(texto_completo, "`n", "`r")
+
+    ; ==========================================
+    ; NOVIDADE 5: Criação da Subpasta
+    ; ==========================================
+    pasta_destino := A_ScriptDir "\paginas_html"
+    if not DirExist(pasta_destino)
+        DirCreate(pasta_destino)
     
     ; 3. O Motor de Repetição (Loop)
     For indice, escola in linhas {
@@ -52,16 +59,38 @@ F11:: {
             
             ; Clica exatamente na aba Avaliações
             MouseClick("Left", achouX, achouY)
-            Sleep(3000) ; Espera 3 segundos para a lista de avaliações carregar na tela
+            Sleep(2500) ; Espera 3 segundos para a lista de avaliações carregar na tela
 
             ; ==========================================
             ; NOVIDADE 3: Motor de Rolagem (WheelDown)
             ; ==========================================
-            ; Loop executa 15 vezes. Aumente esse número se quiser minerar ainda mais fundo.
+            ; Loop executa 20 vezes.
             Loop 20 {
-                Send("{WheelDown 8}") ; Dá 6 "giros" físicos na rodinha do mouse
-                Sleep(800) ; Pausa de quase 1 segundo para o Google baixar os próximos blocos
+                Send("{WheelDown 10}") 
+                Sleep(800) 
             }
+
+            ; ==========================================
+            ; NOVIDADE 4: Salvar Página (Ctrl + S)
+            ; ==========================================
+            ; Prepara o nome do arquivo direcionando para a nova subpasta
+            caminho_salvamento := pasta_destino "\local " indice ".html"
+            
+            ; Prevenção: Se o arquivo já existir de um teste anterior, deleta para não travar na tela de "Substituir?"
+            if FileExist(caminho_salvamento)
+                FileDelete(caminho_salvamento)
+
+            ; Chama o Salvar Como
+            Send("^s")
+            Sleep(1500) ; Aguarda a janela do Windows abrir
+            
+            ; Digita o caminho completo para garantir que caia na pasta certa
+            SendText(caminho_salvamento)
+            Sleep(500)
+            Send("{Enter}")
+            
+            ; Aguarda 3 segundos para o navegador terminar de baixar o arquivo HTML
+            Sleep(3000)
 
         } else {
             Send("{Esc}")
