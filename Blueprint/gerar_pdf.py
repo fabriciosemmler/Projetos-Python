@@ -4,9 +4,21 @@ import pdfkit
 # ==========================================
 # CONFIGURAÇÕES E ROTAS ABSOLUTAS
 # ==========================================
+
+# ==========================================
+# CONTEÚDO DO RELATÓRIO
+# ==========================================
+cliente = "Blueprint Idiomas"
+amostragem = "228"
+tipo_negocio = "escolas de idiomas"
+insights = "• A humanização do atendimento presencial e a didática dos professores são os maiores retentores de alunos, com profissionais como Camila, Ricardo e Álvaro sendo elogiados nominalmente [cite: 59, 102, 144].<br><br>• A comunicação digital é um gargalo na concorrência, pois mensagens ignoradas no WhatsApp e esperas infinitas no telefone geram forte frustração [cite: 24, 43, 158].<br><br>• A desorganização administrativa, como atrasos de material didático e reajustes surpresa nas rematrículas, impulsiona o cancelamento repentino de contratos[cite: 3, 7, 8]."
+elogiado = "O fator humano é o ponto mais forte das escolas concorrentes[cite: 59, 61, 77]. Os clientes valorizam professores engajados e metodologias dinâmicas que criam um ambiente acolhedor[cite: 59, 61, 77]. O atendimento presencial ágil no momento da matrícula recebe muitos destaques positivos, assim como a boa infraestrutura física e a limpeza das instalações[cite: 58, 64, 104]."
+criticado = "A maior falha do mercado local reside na gestão administrativa e no suporte remoto[cite: 24, 158]. Os clientes relatam profunda frustração com o atendimento via WhatsApp e telefone, sentindo-se ignorados ao tentarem cancelar matrículas ou resolver problemas urgentes[cite: 24, 158]. A quebra de expectativa financeira com reajustes abusivos e a falta de organização para entrega de materiais pagos geram a maioria das avaliações destrutivas[cite: 3, 7, 8]."
+# ==========================================
+
 diretorio_raiz = os.path.dirname(os.path.abspath(__file__))
 caminho_template = os.path.join(diretorio_raiz, "template.html")
-caminho_pdf = os.path.join(diretorio_raiz, "Relatorio_Blueprint.pdf")
+caminho_pdf = os.path.join(diretorio_raiz, "Relatorio_Insights.pdf")
 
 # Rota cirúrgica para o motor gráfico (Caminho padrão de instalação no Windows)
 caminho_wkhtmltopdf = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe'
@@ -24,19 +36,10 @@ def gerar_relatorio():
 
     print("Injetando os dados da inteligência...")
     
-    # Textos do nosso piloto (Blueprint Idiomas)
-    insights = (
-        "• A personalização é o maior ativo: O mercado valoriza intensamente o atendimento humanizado, com alunos citando nomes de professores e atendentes.<br>"
-        "• O gargalo digital é uma oportunidade: As grandes redes locais possuem uma falha sistêmica no atendimento online (esperas longas, WhatsApp ignorado).<br>"
-        "• Transparência retém alunos: Processos burocráticos mal geridos são os maiores geradores de evasão."
-    )
-    elogiado = "O ponto mais forte dos concorrentes reside nas salas de aula e no balcão físico. Os clientes elogiam repetidamente a competência, a didática e o acolhimento dos professores. Aulas descritas como divertidas e dinâmicas são o padrão ouro de satisfação. A infraestrutura e a limpeza dos ambientes também são diferenciais."
-    criticado = "A maior dor dos clientes na região é a sensação de abandono logo após a assinatura do contrato. O atendimento online e telefônico é descrito com forte indignação. Clientes se sentem ignorados ao tentar resolver problemas como cancelamentos, atrasos na entrega de material didático já pago e reajustes surpresa."
-
 # Substituição em cascata correta (atualizando o html_final a cada passo)
-    html_final = html_base.replace("{{CLIENTE}}", "Blueprint Idiomas")
-    html_final = html_final.replace("{{AMOSTRAGEM}}", "228")
-    html_final = html_final.replace("{{TIPO_NEGOCIO}}", "escolas de idiomas")
+    html_final = html_base.replace("{{CLIENTE}}", cliente)
+    html_final = html_final.replace("{{AMOSTRAGEM}}", amostragem)
+    html_final = html_final.replace("{{TIPO_NEGOCIO}}", tipo_negocio)
     html_final = html_final.replace("{{INSIGHTS}}", insights)
     html_final = html_final.replace("{{ELOGIADO}}", elogiado)
     html_final = html_final.replace("{{CRITICADO}}", criticado)
