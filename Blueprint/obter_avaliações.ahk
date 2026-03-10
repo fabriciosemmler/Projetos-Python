@@ -4,7 +4,7 @@
 F11:: {
     ; Trava as coordenadas do mouse e do buscador de pixels para a área útil do navegador (Client)
     CoordMode("Mouse", "Client")
-    CoordMode("Pixel", "Client") ; <--- NOVIDADE 1
+    CoordMode("Pixel", "Client") 
 
     ; 1. Abre o Google Maps
     Run("https://www.google.com.br/maps")
@@ -39,33 +39,39 @@ F11:: {
         Sleep(5000)
 
         ; ==========================================
-        ; NOVIDADE 2: O Rastreador de Cor (Ctrl+F)
+        ; O Rastreador de Cor (Ctrl+F)
         ; ==========================================
         Send("^f")
         Sleep(500)
-        
-        ; Digita a palavra para forçar o navegador a pintar de laranja
         SendText("Avaliações")
-        Sleep(1000) ; Espera o navegador rolar (se precisar) e pintar a tela
+        Sleep(1000) 
         
-        ; Procura o pixel laranja (0xFF9632) a partir do ponto 0,0 até o final da tela
         if PixelSearch(&achouX, &achouY, 0, 0, A_ScreenWidth, A_ScreenHeight, 0xFF9632) {
-            ; Guardou a coordenada. Aperta Esc para sair do modo de busca
             Send("{Esc}")
             Sleep(300)
             
-            ; Clica exatamente onde achou a cor
+            ; Clica exatamente na aba Avaliações
             MouseClick("Left", achouX, achouY)
+            Sleep(3000) ; Espera 3 segundos para a lista de avaliações carregar na tela
+
+            ; ==========================================
+            ; NOVIDADE 3: Motor de Rolagem (WheelDown)
+            ; ==========================================
+            ; Loop executa 15 vezes. Aumente esse número se quiser minerar ainda mais fundo.
+            Loop 20 {
+                Send("{WheelDown 8}") ; Dá 6 "giros" físicos na rodinha do mouse
+                Sleep(800) ; Pausa de quase 1 segundo para o Google baixar os próximos blocos
+            }
+
         } else {
-            ; Se a cor não for encontrada, aperta Esc para limpar a barra de busca e não travar o loop
             Send("{Esc}")
             Sleep(300)
         }
         
-        ; Aguarda 5 segundos entre as escolas, como solicitado
+        ; Aguarda 5 segundos antes de ir para a próxima escola do txt
         Sleep(5000)
     }
     
     ; 4. Finalização: Fecha a aba atual do navegador (Ctrl + W)
-    Send("^w")
+    ; Send("^w")
 }
