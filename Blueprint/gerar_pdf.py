@@ -33,13 +33,13 @@ def gerar_relatorio():
     elogiado = "O ponto mais forte dos concorrentes reside nas salas de aula e no balcão físico. Os clientes elogiam repetidamente a competência, a didática e o acolhimento dos professores. Aulas descritas como divertidas e dinâmicas são o padrão ouro de satisfação. A infraestrutura e a limpeza dos ambientes também são diferenciais."
     criticado = "A maior dor dos clientes na região é a sensação de abandono logo após a assinatura do contrato. O atendimento online e telefônico é descrito com forte indignação. Clientes se sentem ignorados ao tentar resolver problemas como cancelamentos, atrasos na entrega de material didático já pago e reajustes surpresa."
 
-    # Substituição exata das etiquetas
+# Substituição em cascata correta (atualizando o html_final a cada passo)
     html_final = html_base.replace("{{CLIENTE}}", "Blueprint Idiomas")
-    html_final = html_base.replace("{{AMOSTRAGEM}}", "228")
-    html_final = html_base.replace("{{TIPO_NEGOCIO}}", "escolas de idiomas")
-    html_final = html_base.replace("{{INSIGHTS}}", insights)
-    html_final = html_base.replace("{{ELOGIADO}}", elogiado)
-    html_final = html_base.replace("{{CRITICADO}}", criticado)
+    html_final = html_final.replace("{{AMOSTRAGEM}}", "228")
+    html_final = html_final.replace("{{TIPO_NEGOCIO}}", "escolas de idiomas")
+    html_final = html_final.replace("{{INSIGHTS}}", insights)
+    html_final = html_final.replace("{{ELOGIADO}}", elogiado)
+    html_final = html_final.replace("{{CRITICADO}}", criticado)
 
     print("Renderizando o PDF pixel-perfect...")
     
