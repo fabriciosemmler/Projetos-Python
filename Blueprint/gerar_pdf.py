@@ -76,7 +76,7 @@ def gerar_relatorio():
     
     texto_whatsapp = f"""*Relatório de Inteligência de Mercado*
     *Cliente:* {cliente}
-    *Amostragem:* {amostragem} avaliações extraídas de {tipo_negocio} na mesma região.
+    *Amostragem:* {amostragem} avaliações extraídas.
 
     *Insights Estratégicos*
     {insights_wa}
