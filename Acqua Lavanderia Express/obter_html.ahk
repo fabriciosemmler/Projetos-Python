@@ -37,13 +37,42 @@ F11:: {
         Send("{Delete}")
         Sleep(200)
         
-        ; Cola o texto da linha atual e aperta Enter
+        ; ==========================================
+        ; Cola o texto e pega do AUTOCOMPLETAR
+        ; ==========================================
         SendText(escola)
-        Sleep(500)
+        
+        ; Aguarda o Google abrir o menu suspenso de sugestões
+        Sleep(1500) 
+        
+        ; Aperta para baixo para selecionar a primeira sugestão (o local exato, sem anúncios)
+        Send("{Down}")
+        Sleep(300)
+        
+        ; Aperta Enter para entrar direto na página do local
         Send("{Enter}")
         
         ; Aguarda 5 segundos carregando o local
         Sleep(5000)
+
+        ; ==========================================
+        ; NOVIDADE 7: Validação de Nicho (Filtro Anti-Ruído)
+        ; ==========================================
+        nicho_cliente := "Lavanderia" ; A palavra-chave que obrigatoriamente deve estar na página
+        
+        A_Clipboard := "" ; Limpa a memória para não pegar lixo da rodada anterior
+        
+        Send("^a") ; Seleciona todo o texto da tela
+        Sleep(300)
+        Send("^c") ; Copia para a memória
+        Sleep(300)
+        Send("{Esc}") ; Tira a marcação azul da tela
+        Sleep(300)
+        
+        ; O Bafômetro: Se a palavra não estiver no texto copiado, é um estabelecimento errado
+        if not InStr(A_Clipboard, nicho_cliente) {
+            continue ; Aborta este local silenciosamente e puxa o próximo da lista do txt
+        }
 
         ; ==========================================
         ; O Rastreador de Cor (Ctrl+F)
@@ -150,7 +179,6 @@ F11:: {
     SoundBeep(750, 500) ; Toca um bipe de 750Hz por meio segundo
     ExibirAvisoGrande("Extração Concluída!")
 }
-
 
 ; ==========================================
 ; FUNÇÕES AUXILIARES
