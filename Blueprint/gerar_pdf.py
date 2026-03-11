@@ -75,8 +75,8 @@ def gerar_relatorio():
         html_final = html_final.replace("{{ELOGIADO}}", elogiado_limpo)
         html_final = html_final.replace("{{CRITICADO}}", criticado_limpo)
         
-        # Injeta o tamanho da fonte atual do loop
-        html_final = html_final.replace("{{TAMANHO_FONTE}}", str(tamanho))
+        # Substitui apenas a linha que tem a assinatura alvo-dinamico
+        html_final = html_final.replace("font-size: 18px; /* alvo-dinamico */", f"font-size: {tamanho}px; /* alvo-dinamico */")
 
         try:
             # Gera o PDF (vai sobrescrever se já existir)
