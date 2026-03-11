@@ -1,6 +1,7 @@
 import re
 import os
 import pdfkit
+from pypdf import PdfReader
 
 # ==========================================
 # CONFIGURAÇÕES E ROTAS ABSOLUTAS
@@ -40,26 +41,14 @@ def gerar_relatorio():
     # ==========================================
     # FILTRO CIRÚRGICO: Limpa as citações da IA
     # ==========================================
-    # Separamos a palavra gatilho para a interface do chat não quebrar o código
     gatilho = "ci" + "te:"
     padrao_citacao = r'\s*\[' + gatilho + r'.*?\]'
     
-    # O Python lê as variáveis globais, limpa e salva nas variáveis locais (_limpo)
     insights_limpo = re.sub(padrao_citacao, '', insights)
     elogiado_limpo = re.sub(padrao_citacao, '', elogiado)
     criticado_limpo = re.sub(padrao_citacao, '', criticado)
 
-    # Substituição em cascata chamando as variáveis limpas
-    html_final = html_base.replace("{{CLIENTE}}", cliente)
-    html_final = html_final.replace("{{AMOSTRAGEM}}", amostragem)
-    html_final = html_final.replace("{{TIPO_NEGOCIO}}", tipo_negocio)
-    html_final = html_final.replace("{{INSIGHTS}}", insights_limpo)
-    html_final = html_final.replace("{{ELOGIADO}}", elogiado_limpo)
-    html_final = html_final.replace("{{CRITICADO}}", criticado_limpo)
-
-    print("Renderizando o PDF pixel-perfect...")
-    
-    # Opções de engenharia para remover margens brancas nativas e usar o nosso CSS
+    # Opções de engenharia para o PDF
     opcoes = {
         'page-size': 'A4',
         'margin-top': '0mm',
@@ -70,11 +59,42 @@ def gerar_relatorio():
         'enable-local-file-access': None
     }
 
-    try:
-        pdfkit.from_string(html_final, caminho_pdf, configuration=configuracao, options=opcoes)
-        print(f"\nSucesso absoluto! Relatório comercial gerado em:\n{caminho_pdf}")
-    except Exception as e:
-        print(f"\nErro ao gerar o PDF. Verifique se o wkhtmltopdf foi instalado corretamente. Detalhe: {e}")
+    # ==========================================
+    # MOTOR ADAPTATIVO: Testa os tamanhos de fonte
+    # ==========================================
+    tamanhos_teste = [20, 19, 18, 17, 16, 15, 14]
+    
+    for tamanho in tamanhos_teste:
+        print(f"Testando renderização com fonte de {tamanho}px...")
+        
+        # Substituição em cascata a cada nova tentativa
+        html_final = html_base.replace("{{CLIENTE}}", cliente)
+        html_final = html_final.replace("{{AMOSTRAGEM}}", amostragem)
+        html_final = html_final.replace("{{TIPO_NEGOCIO}}", tipo_negocio)
+        html_final = html_final.replace("{{INSIGHTS}}", insights_limpo)
+        html_final = html_final.replace("{{ELOGIADO}}", elogiado_limpo)
+        html_final = html_final.replace("{{CRITICADO}}", criticado_limpo)
+        
+        # Injeta o tamanho da fonte atual do loop
+        html_final = html_final.replace("{{TAMANHO_FONTE}}", str(tamanho))
+
+        try:
+            # Gera o PDF (vai sobrescrever se já existir)
+            pdfkit.from_string(html_final, caminho_pdf, configuration=configuracao, options=opcoes)
+            
+            # Lê o arquivo que acabou de ser criado para conferir as páginas
+            leitor = PdfReader(caminho_pdf)
+            numero_paginas = len(leitor.pages)
+            
+            if numero_paginas == 1:
+                print(f"\nSucesso absoluto! Relatório de 1 página gerado com fonte {tamanho}px.")
+                break # Interrompe o loop, pois o objetivo foi alcançado
+            else:
+                print(f"O relatório gerou {numero_paginas} páginas. Reduzindo para o próximo tamanho...")
+                
+        except Exception as e:
+            print(f"\nErro ao gerar o PDF: {e}")
+            break # Se der erro no motor wkhtmltopdf, para tudo para não ficar travado
 
 if __name__ == "__main__":
     gerar_relatorio()
