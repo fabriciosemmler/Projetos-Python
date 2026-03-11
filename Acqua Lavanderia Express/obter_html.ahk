@@ -2,6 +2,18 @@
 #SingleInstance Force
 
 F11:: {
+    ; ==========================================
+    ; NOVIDADE 8: Parametrização Dinâmica de Nicho
+    ; ==========================================
+    tela_nicho := InputBox("Digite a palavra-chave do nicho (ex: Lavanderia, Veterinária):`nDeixe em branco ou cancele para abortar.", "Filtro Anti-Ruído", "w350 h130")
+    
+    ; Trava de segurança: Se o usuário cancelar ou não digitar nada, aborta o script
+    if (tela_nicho.Result = "Cancel" or tela_nicho.Value = "") {
+        return 
+    }
+    
+    nicho_cliente := tela_nicho.Value ; Salva a palavra digitada na memória
+
     ; Trava as coordenadas do mouse e do buscador de pixels para a área útil do navegador (Client)
     CoordMode("Mouse", "Client")
     CoordMode("Pixel", "Client") 
@@ -58,7 +70,7 @@ F11:: {
         ; ==========================================
         ; NOVIDADE 7: Validação de Nicho (Filtro Anti-Ruído)
         ; ==========================================
-        nicho_cliente := "Lavanderia" ; A palavra-chave que obrigatoriamente deve estar na página
+        ; (A variável nicho_cliente agora vem lá do InputBox do início)
         
         A_Clipboard := "" ; Limpa a memória para não pegar lixo da rodada anterior
         
