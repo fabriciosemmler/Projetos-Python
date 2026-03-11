@@ -171,3 +171,14 @@ ExibirAvisoGrande(texto) {
         AvisoGui.Show("AutoSize NoActivate Center")
     }
 }
+
+; ==========================================
+; NOVIDADE 6: Botão de Pânico (Interrompe o Script)
+; Atalho: Esc + F11
+; ==========================================
+Esc & F11:: {
+    SoundBeep(400, 300) ; Toca um bipe grave
+    Sleep(100)
+    SoundBeep(400, 300) ; Toca o bipe grave de novo (sirene de parada)
+    ExitApp ; Mata o processo do script imediatamente
+}
