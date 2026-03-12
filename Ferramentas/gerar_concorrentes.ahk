@@ -1,12 +1,13 @@
 #Requires AutoHotkey v2.0
 #SingleInstance Force
 global pasta_cliente := ""
+global GuiInstrucoes := "" ; Novo objeto global para a interface
 
 ; ==========================================
 ; FASE 1: Preparação e Prompt (Atalho: F19)
 ; ==========================================
 F19:: {
-    global pasta_cliente
+    global pasta_cliente, GuiInstrucoes
     
     ; 1. Abre a janela nativa para selecionar a PASTA do cliente
     pasta_cliente := DirSelect("", 0, "Selecione a pasta do cliente para salvar a lista")
@@ -36,15 +37,30 @@ F19:: {
     ; Aguarda 1 segundo para o navegador abrir e puxar o foco
     Sleep(1000)
     
-    ; 6. Aviso de instrução (Forçado para frente com o código 262144)
-    MsgBox("Prompt copiado para a memória!`n`n1. Cole (Ctrl+V) no Gemini e dê Enter.`n2. Quando a IA terminar de escrever, clique no botão 'Copiar' da resposta.`n3. Pressione Ctrl + F19 para salvar o arquivo na pasta do cliente.", "Passo 1 Concluído", "Iconi 262144")
+    ; 6. Aviso de instrução (Interface Própria Não-Bloqueante)
+    if GuiInstrucoes {
+        try GuiInstrucoes.Destroy()
+    }
+    
+    GuiInstrucoes := Gui("+AlwaysOnTop -Caption +Border +ToolWindow")
+    GuiInstrucoes.BackColor := "1f1f1f"
+    GuiInstrucoes.SetFont("s12 cAqua bold", "Segoe UI")
+    
+    texto_instrucao := "Prompt copiado para a memória!`n`n1. Cole (Ctrl+V) no Gemini e dê Enter.`n2. Quando a IA terminar de escrever, clique em 'Copiar'.`n3. Pressione Ctrl + F19 para salvar."
+    GuiInstrucoes.Add("Text", "Center w400", texto_instrucao)
+    
+    ; Calcula a posição para grudar na direita (largura da tela menos 450 pixels da caixinha)
+    pos_x := A_ScreenWidth - 450
+    
+    ; Mostra a janela no canto superior direito matematicamente, sem roubar o foco (NoActivate)
+    GuiInstrucoes.Show("AutoSize NoActivate x" pos_x " y50")
 }
 
 ; ==========================================
 ; FASE 2: Captura e Salvamento (Atalho: Ctrl + F19)
 ; ==========================================
 ^F19:: {
-    global pasta_cliente
+    global pasta_cliente, GuiInstrucoes
     
     ; Trava de segurança: Verifica se o F19 foi usado antes
     if (pasta_cliente = "") {
@@ -72,7 +88,12 @@ F19:: {
     ; 4. Cria o arquivo injetando o texto limpo (em UTF-8 para não quebrar acentos)
     FileAppend(texto_limpo, caminho_txt, "UTF-8")
     
-    ; 5. Finalização
+    ; 5. Finalização e Destruição da GUI de instruções
+    if GuiInstrucoes {
+        try GuiInstrucoes.Destroy()
+        GuiInstrucoes := ""
+    }
+    
     SoundBeep(750, 500)
     MsgBox("Sucesso! 'lista_concorrentes.txt' salvo blindado na pasta do cliente.", "Passo 2 Concluído", "Iconi 262144")
     
