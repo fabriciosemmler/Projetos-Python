@@ -31,8 +31,13 @@ F19:: {
     ; 4. Joga o prompt pronto para a memória (Área de Transferência)
     A_Clipboard := prompt
     
-    ; 5. Abre o Gemini no navegador, na conversa Semmler Automações
-    Run("https://gemini.google.com/app/2267c167a9509945")
+    ; 5. Verifica se a aba da conversa já está aberta (pelo título parcial da janela)
+    SetTitleMatchMode(2) ; Permite encontrar a janela por qualquer parte do título
+    if WinExist("Google Gemini") {
+        WinActivate("Google Gemini") ; Puxa a janela existente para a frente
+    } else {
+        Run("https://gemini.google.com/app/2267c167a9509945") ; Abre uma aba nova
+    }
     
     ; Aguarda 1 segundo para o navegador abrir e puxar o foco
     Sleep(1000)
@@ -100,3 +105,5 @@ F19:: {
     ; Limpa a memória da pasta para o próximo uso
     pasta_cliente := ""
 }
+
+!v::GuiInstrucoes.Destroy()
