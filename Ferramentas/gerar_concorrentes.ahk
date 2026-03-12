@@ -33,8 +33,11 @@ F19:: {
     ; 5. Abre o Gemini no navegador, na conversa Semmler Automações
     Run("https://gemini.google.com/app/2267c167a9509945")
     
-    ; 6. Aviso de instrução
-    MsgBox("Prompt copiado para a memória!`n`n1. Cole (Ctrl+V) no Gemini e dê Enter.`n2. Quando a IA terminar de escrever, clique no botão 'Copiar' da resposta.`n3. Pressione F12 para salvar o arquivo na pasta do cliente.", "Passo 1 Concluído", "Iconi")
+    ; Aguarda 1 segundo para o navegador abrir e puxar o foco
+    Sleep(1000)
+    
+    ; 6. Aviso de instrução (Forçado para frente com o código 262144)
+    MsgBox("Prompt copiado para a memória!`n`n1. Cole (Ctrl+V) no Gemini e dê Enter.`n2. Quando a IA terminar de escrever, clique no botão 'Copiar' da resposta.`n3. Pressione Ctrl + F19 para salvar o arquivo na pasta do cliente.", "Passo 1 Concluído", "Iconi 262144")
 }
 
 ; ==========================================
@@ -43,9 +46,9 @@ F19:: {
 ^F19:: {
     global pasta_cliente
     
-    ; Trava de segurança: Verifica se o F10 foi usado antes
+    ; Trava de segurança: Verifica se o F19 foi usado antes
     if (pasta_cliente = "") {
-        MsgBox("Nenhuma pasta selecionada. Use o F10 primeiro para iniciar o processo.", "Aviso de Segurança", "IconX")
+        MsgBox("Nenhuma pasta selecionada. Use o F19 primeiro para iniciar o processo.", "Aviso de Segurança", "IconX 262144")
         return
     }
 
@@ -71,7 +74,7 @@ F19:: {
     
     ; 5. Finalização
     SoundBeep(750, 500)
-    MsgBox("Sucesso! 'lista_concorrentes.txt' salvo blindado na pasta do cliente.", "Passo 2 Concluído", "Iconi")
+    MsgBox("Sucesso! 'lista_concorrentes.txt' salvo blindado na pasta do cliente.", "Passo 2 Concluído", "Iconi 262144")
     
     ; Limpa a memória da pasta para o próximo uso
     pasta_cliente := ""
