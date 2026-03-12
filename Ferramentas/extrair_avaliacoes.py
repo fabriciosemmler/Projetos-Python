@@ -1,28 +1,43 @@
 import os
+import tkinter as tk
+from tkinter import filedialog
 from bs4 import BeautifulSoup
 
-
-# ==========================================
-# CONFIGURAÇÕES (Rotas Absolutas)
-# ==========================================
-# Descobre a pasta exata onde este script extrair_avaliacoes.py está salvo
-diretorio_raiz = os.path.dirname(os.path.abspath(__file__))
-
-# Constrói os caminhos blindados
-pasta_html = os.path.join(diretorio_raiz, "paginas_html")
-arquivo_saida = os.path.join(diretorio_raiz, "reviews_concorrentes.txt")
-
 def extrair_dados():
+    # ==========================================
+    # NOVIDADE: Seleção Dinâmica da Pasta do Cliente
+    # ==========================================
+    # Inicia a janela invisível e força ela para a frente de tudo
+    root = tk.Tk()
+    root.withdraw()
+    root.attributes('-topmost', True)
+    
+    # Abre o seletor pedindo a pasta principal do cliente
+    pasta_cliente = filedialog.askdirectory(title="Selecione a pasta do cliente (ex: Acqua Lavanderia)")
+    
+    # Limpa a memória da janela
+    root.destroy()
+    
+    # Se você cancelar a janela, aborta o script
+    if not pasta_cliente:
+        print("Operação cancelada.")
+        return
+
+    # Constrói os caminhos blindados baseados na pasta escolhida
+    pasta_html = os.path.join(pasta_cliente, "paginas_html")
+    arquivo_saida = os.path.join(pasta_cliente, "reviews_concorrentes.txt")
+
+    print(f"Alvo selecionado: {pasta_cliente}")
     print("Iniciando a extração cirúrgica de avaliações...\n")
     
     if not os.path.exists(pasta_html):
-        print(f"Erro: A pasta '{pasta_html}' não foi encontrada.")
+        print(f"Erro: A subpasta 'paginas_html' não foi encontrada dentro do cliente.")
         return
 
     arquivos = [f for f in os.listdir(pasta_html) if f.endswith('.html')]
     total_avaliacoes = 0
 
-    # Abre o arquivo de saída em modo de escrita ('w' limpa o arquivo antigo)
+    # Abre o arquivo de saída na pasta do cliente ('w' limpa o arquivo antigo)
     with open(arquivo_saida, 'w', encoding='utf-8') as f_out:
         
         for arquivo in arquivos:
@@ -52,7 +67,7 @@ def extrair_dados():
                         
             print(f"[{contador_local} extraídas]")
             
-    print(f"\nFinalizado! {total_avaliacoes} avaliações consolidadas em '{arquivo_saida}'.")
+    print(f"\nFinalizado! {total_avaliacoes} avaliações consolidadas no arquivo 'reviews_concorrentes.txt'.")
 
 # Executa a função
 if __name__ == "__main__":
