@@ -5,16 +5,32 @@ F11:: {
     ; ==========================================
     ; NOVIDADE 9: Seleção Dinâmica do Cliente
     ; ==========================================
-    ; Abre a janela nativa do Windows para você apontar o txt do cliente
-    caminho_txt := FileSelect(3, , "Selecione o lista_concorrentes.txt do cliente", "Documentos de Texto (*.txt)")
+    ; Abre a janela nativa do Windows para você apontar a PASTA do cliente
+    pasta_cliente := DirSelect("", 0, "Selecione a pasta do cliente")
     
     ; Se cancelar a janela, aborta silenciosamente
-    if (caminho_txt = "") {
+    if (pasta_cliente = "") {
         return
     }
     
-    ; Extrai automaticamente a rota da pasta onde esse txt está guardado
-    SplitPath(caminho_txt, , &pasta_cliente)
+    ; Monta o caminho exato do arquivo de texto
+    caminho_txt := pasta_cliente "\lista_concorrentes.txt"
+    
+    ; Trava de Segurança 1: O arquivo existe na pasta?
+    if not FileExist(caminho_txt) {
+        MsgBox("O arquivo 'lista_concorrentes.txt' não foi encontrado na pasta selecionada.", "Aviso de Segurança", "Iconi")
+        return
+    }
+    
+    ; Trava de Segurança 2: Lê o arquivo e verifica se tem texto dentro
+    texto_completo := FileRead(caminho_txt, "UTF-8")
+    if (Trim(texto_completo) = "") {
+        MsgBox("O arquivo 'lista_concorrentes.txt' está vazio. Adicione os concorrentes antes de iniciar.", "Aviso de Segurança", "Iconi")
+        return
+    }
+    
+    ; Fatia as linhas aqui no início para o loop usar mais tarde
+    linhas := StrSplit(texto_completo, "`n", "`r")
 
     ; ==========================================
     ; NOVIDADE 8: Parametrização Dinâmica (Radar de Sinônimos)
@@ -37,10 +53,6 @@ F11:: {
     Run("https://www.google.com.br/maps")
     Sleep(5000)
     
-    ; 2. Lê o arquivo escolhido dinamicamente e fatia as linhas
-    texto_completo := FileRead(caminho_txt, "UTF-8")
-    linhas := StrSplit(texto_completo, "`n", "`r")
-
     ; ==========================================
     ; NOVIDADE 5: Criação da Subpasta no Cliente Certo
     ; ==========================================
