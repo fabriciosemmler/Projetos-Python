@@ -1,17 +1,22 @@
 #Requires AutoHotkey v2.0
 #SingleInstance Force
 global pasta_cliente := ""
-global GuiInstrucoes := "" ; Novo objeto global para a interface
-global ultima_pasta := "" ; NOVO: Memória persistente do último diretório acessado
+global GuiInstrucoes := ""
+global arquivo_memoria := A_ScriptDir "\memoria_pasta.txt" ; Define o arquivo de salvamento
+global ultima_pasta := ""
+
+; Lê o arquivo físico ao iniciar o script, se ele existir
+if FileExist(arquivo_memoria) {
+    ultima_pasta := FileRead(arquivo_memoria)
+}
 
 ; ==========================================
 ; FASE 1: Preparação e Prompt (Atalho: F19)
 ; ==========================================
 F19:: {
-    global pasta_cliente, GuiInstrucoes, ultima_pasta ; NOVO: Injetada a nova global aqui
+    global pasta_cliente, GuiInstrucoes, ultima_pasta, arquivo_memoria
     
-    ; 1. Abre a janela nativa para selecionar a PASTA do cliente
-; O asterisco (*) destrava o Windows, permitindo subir de nível e ver pastas "irmãs"
+    ; 1. Abre a janela nativa para selecionar a PASTA (com asterisco para destravar a navegação)
     caminho_inicial := (ultima_pasta = "") ? "" : "*" ultima_pasta
     pasta_cliente := DirSelect(caminho_inicial, 0, "Selecione a pasta do cliente para salvar a lista")
     
@@ -19,7 +24,12 @@ F19:: {
         return ; Aborta silenciosamente
     }
 
-    ultima_pasta := pasta_cliente ; NOVO: Grava a escolha com sucesso na memória para a próxima rodada
+    ; Grava fisicamente no disco para não esquecer ao reiniciar
+    ultima_pasta := pasta_cliente
+    if FileExist(arquivo_memoria) {
+        FileDelete(arquivo_memoria)
+    }
+    FileAppend(ultima_pasta, arquivo_memoria)
 
     ; 2. Pede o ramo de atuação
     tela_ramo := InputBox("Qual o ramo do cliente? (Ex: Lavanderia automatizada)", "Gerador de Prompt", "w450 h130")
