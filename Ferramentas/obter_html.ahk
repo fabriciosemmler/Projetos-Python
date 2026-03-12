@@ -79,8 +79,8 @@ F11:: {
         ; Aperta Enter para entrar direto na página do local
         Send("{Enter}")
         
-        ; Aguarda 5 segundos carregando o local
-        Sleep(5000)
+        ; Aguarda 3 segundos carregando o local
+        Sleep(3000)
 
         ; ==========================================
         ; NOVIDADE 7: Validação de Nicho (Radar Anti-Ruído)
