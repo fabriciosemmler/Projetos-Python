@@ -45,6 +45,8 @@ def descobrir_palavras_chave(arquivo_entrada, arquivo_saida, pasta_cliente, top_
         with open(arquivo_saida, 'w', encoding='utf-8') as f:
             f.write(", ".join(top_palavras))
 
+        print('Salvamento concluído!')
+
     except FileNotFoundError:
         # Se o arquivo não existir, criamos um arquivo vazio para não quebrar o AHK
         with open(arquivo_saida, 'w', encoding='utf-8') as f:
