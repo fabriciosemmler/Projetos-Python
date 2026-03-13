@@ -43,9 +43,41 @@ F11:: {
     CoordMode("Mouse", "Client")
     CoordMode("Pixel", "Client") 
 
-    ; 1. Abre o Google Maps (Isolado na Conta da Empresa)
-    Run('chrome.exe --user-data-dir="C:\Robo_Empresa" "https://www.google.com.br/maps"')
-    Sleep(5000)
+    ; ==========================================
+    ; 1. BLINDAGEM DE NAVEGADOR: Isola o Chrome e previne múltiplas abas
+    ; ==========================================
+    SetTitleMatchMode(2) ; Permite achar a janela por qualquer pedaço do título
+    RoboHWND := 0
+    
+    try {
+        ; O Motor WMI vasculha o Windows atrás do processo exato do Chrome da Empresa
+        for proc in ComObjGet("winmgmts:").ExecQuery("Select ProcessId, CommandLine from Win32_Process where Name='chrome.exe'") {
+            if InStr(proc.CommandLine, "Robo_Empresa") {
+                PID := proc.ProcessId
+                if WinExist("ahk_pid " PID) {
+                    RoboHWND := WinGetID("ahk_pid " PID)
+                    break
+                }
+            }
+        }
+    }
+    
+    if (RoboHWND) {
+        ; O Chrome da empresa já está aberto! Vamos puxá-lo para frente.
+        WinActivate("ahk_id " RoboHWND)
+        Sleep(1000)
+    } else {
+        ; Não está aberto. Abre uma página totalmente em branco (about:blank) para garantir uma única aba limpa
+        Run('chrome.exe --user-data-dir="C:\Robo_Empresa" "about:blank"')
+        
+        ; Aguarda a janela em branco carregar (limite de 15 segundos)
+        if WinWaitActive("about:blank", , 15) {
+            RoboHWND := WinGetID("A") ; Captura a "Identidade" (HWND) dessa janela
+        } else {
+            MsgBox("Erro: O Chrome da empresa não carregou a tempo.", "Falha de Inicialização", "IconX")
+            return
+        }
+    }
     
     ; ==========================================
     ; NOVIDADE 5: Criação da Subpasta no Cliente Certo
@@ -54,7 +86,7 @@ F11:: {
     if not DirExist(pasta_destino)
         DirCreate(pasta_destino)
     
-    ; 3. O Motor de Repetição (Loop)
+    ; 3. O Motor de Repetição (Loop) - Vai reaproveitar a aba atual
     For indice, escola in linhas {
         ; Ignora linhas vazias
         if (escola = "")
@@ -64,7 +96,6 @@ F11:: {
         ; TRAVA DE SEGURANÇA MÁXIMA (O "Faxineiro")
         ; ==========================================
         ; Se por algum erro bizarro a janela "Salvar como" do ciclo anterior ficou aberta, extermina ela.
-        ; ahk_class #32770 é o código universal do Windows para caixas de diálogo (Salvar/Abrir).
         if WinExist("ahk_class #32770") {
             WinClose("ahk_class #32770")
             Sleep(500)
@@ -73,6 +104,10 @@ F11:: {
         ; ==========================================
         ; NAVEGAÇÃO DIRETA (VIA URL)
         ; ==========================================
+        ; Garante que o robô está focando na janela exclusiva da Empresa antes de digitar
+        WinActivate("ahk_id " RoboHWND)
+        Sleep(300)
+        
         ; Foca na barra de endereços do navegador (Ctrl+L)
         Send("^l")
         Sleep(300)
@@ -147,7 +182,6 @@ F11:: {
             ; Chama o Salvar Como
             Send("^s")
             
-            ; AJUSTE CIRÚRGICO: Fim da "Espera Cega" (Substitui o antigo Sleep(1500))
             ; O script aguarda até 15 segundos pela janela de salvamento e SÓ AVANÇA quando ela estiver ativa
             if WinWaitActive("ahk_class #32770", , 15) {
                 Sleep(800) ; Respiro de segurança para o Windows focar na caixa de texto
