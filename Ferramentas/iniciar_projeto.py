@@ -29,6 +29,11 @@ def salvar_e_iniciar():
         pasta_projeto = os.path.join(base, cliente)
         os.makedirs(pasta_projeto, exist_ok=True) # Cria a pasta se não existir
 
+        # --- MUDANÇA CIRÚRGICA: Criação dos TXTs em branco (À prova de erros) ---
+        open(os.path.join(pasta_projeto, "lista_concorrentes.txt"), 'w', encoding='utf-8').close()
+        open(os.path.join(pasta_projeto, "redacao_final.txt"), 'w', encoding='utf-8').close()
+        # ------------------------------------------------------------------------
+
         # Salva o memoria_pasta.txt na pasta deste script (MANTIDO PARA NÃO QUEBRAR O FLUXO)
         diretorio_ferramentas = os.path.dirname(os.path.abspath(__file__))
         caminho_memoria = os.path.join(diretorio_ferramentas, "memoria_pasta.txt")
