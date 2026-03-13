@@ -43,8 +43,8 @@ F11:: {
     CoordMode("Mouse", "Client")
     CoordMode("Pixel", "Client") 
 
-    ; 1. Abre o Google Maps
-    Run("https://www.google.com.br/maps")
+    ; 1. Abre o Google Maps (Isolado na Conta da Empresa)
+    Run('chrome.exe --user-data-dir="C:\Robo_Empresa" "https://www.google.com.br/maps"')
     Sleep(5000)
     
     ; ==========================================
@@ -303,4 +303,3 @@ O texto deve ser bonito, simples e fácil de copiar e colar no whatsapp para edi
     Sleep(50)
     SoundBeep(1200, 150)
 }
-
