@@ -2,7 +2,7 @@ import os
 import sys
 import subprocess
 import tkinter as tk
-from tkinter import messagebox
+from tkinter import messagebox, filedialog # <-- AJUSTE CIRÚRGICO: Adicionado filedialog
 import webbrowser
 
 # ==========================================
@@ -27,6 +27,18 @@ def atualizar_status():
                 var_status.set("Alvo Atual: Nenhum projeto ativo")
     except FileNotFoundError:
         var_status.set("Alvo Atual: Nenhum projeto ativo")
+
+# --- AJUSTE CIRÚRGICO: Nova função para trocar de pasta manualmente ---
+def acao_trocar_projeto():
+    nova_pasta = filedialog.askdirectory(title="Selecione a pasta do projeto existente")
+    if nova_pasta:
+        nova_pasta_limpa = os.path.normpath(nova_pasta)
+        # Sobrescreve a memória do robô com a nova rota
+        with open(caminho_memoria, "w", encoding="utf-8") as f:
+            f.write(nova_pasta_limpa)
+        # Atualiza o visual do painel imediatamente
+        atualizar_status()
+# ----------------------------------------------------------------------
 
 def acao_iniciar():
     # Dispara o script de inicialização sem travar o painel
@@ -103,11 +115,21 @@ root.configure(padx=20, pady=15, bg="#f0f0f0")
 # Título Principal
 tk.Label(root, text="Auditoria de Avaliações", font=("Segoe UI", 16, "bold"), bg="#f0f0f0").pack(pady=(0, 5))
 
-# Status do Cliente (Painel Inteligente)
+# --- AJUSTE CIRÚRGICO: Frame para agrupar o texto e o botão de trocar ---
+frame_status = tk.Frame(root, bg="#f0f0f0")
+frame_status.pack(pady=(0, 15))
+
 var_status = tk.StringVar()
 atualizar_status()
-label_status = tk.Label(root, textvariable=var_status, font=("Segoe UI", 10, "italic"), fg="#0052cc", bg="#f0f0f0")
-label_status.pack(pady=(0, 15))
+
+# O Label agora fica dentro do frame_status
+label_status = tk.Label(frame_status, textvariable=var_status, font=("Segoe UI", 10, "italic"), fg="#0052cc", bg="#f0f0f0")
+label_status.pack(side="left")
+
+# Botão minimalista ao lado do texto
+botao_trocar = tk.Button(frame_status, text="📁", font=("Segoe UI", 9), bd=0, bg="#e0e0e0", cursor="hand2", command=acao_trocar_projeto)
+botao_trocar.pack(side="left", padx=(8, 0))
+# ------------------------------------------------------------------------
 
 # ==========================================
 # BOTÕES E INSTRUÇÕES
@@ -126,11 +148,10 @@ tk.Label(root, text="↳ Copiar URLs do Google Maps para o lista_concorrentes.tx
 # Passo 3
 tk.Button(root, text="3. Armar Motor de Coleta (AHK)", font=("Segoe UI", 10), width=largura_botao, command=acao_ligar_ahk).pack(pady=(15, 5))
 
-# --- AJUSTE CIRÚRGICO: Passo 4 Simplificado ---
+# Passo 4 Simplificado
 tk.Button(root, text="4. Extração de Inteligência (Gemini)", font=("Segoe UI", 10), width=largura_botao, command=acao_abrir_gemini).pack(pady=(15, 0))
 tk.Label(root, text="↳ Enviar arquivo reviews_concorrentes.txt e apertar Ctrl + F18", font=fonte_instrucao, fg=cor_instrucao, bg="#f0f0f0").pack(pady=(0, 0))
 tk.Label(root, text="↳ Copiar o rascunho da IA e apertar F20 (Salva automático)", font=fonte_instrucao, fg=cor_instrucao, bg="#f0f0f0").pack(pady=(0, 5))
-# ----------------------------------------------
 
 # Passo 5
 tk.Button(root, text="5. Emitir Relatório (PDF e Whatsapp)", font=("Segoe UI", 10, "bold"), width=largura_botao, bg="#4CAF50", fg="white", command=acao_gerar_pdf).pack(pady=(20, 5))
