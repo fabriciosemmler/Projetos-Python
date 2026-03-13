@@ -101,7 +101,7 @@ root.resizable(False, False)
 root.configure(padx=20, pady=15, bg="#f0f0f0")
 
 # Título Principal
-tk.Label(root, text="Análise de Avaliações", font=("Segoe UI", 16, "bold"), bg="#f0f0f0").pack(pady=(0, 5))
+tk.Label(root, text="Auditoria de Avaliações", font=("Segoe UI", 16, "bold"), bg="#f0f0f0").pack(pady=(0, 5))
 
 # Status do Cliente (Painel Inteligente)
 var_status = tk.StringVar()
