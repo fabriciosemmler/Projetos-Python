@@ -1,4 +1,6 @@
 import os
+import sys
+import subprocess
 import tkinter as tk
 from tkinter import messagebox
 import webbrowser
@@ -10,7 +12,7 @@ diretorio_ferramentas = os.path.dirname(os.path.abspath(__file__))
 caminho_memoria = os.path.join(diretorio_ferramentas, "memoria_pasta.txt")
 
 # ==========================================
-# FUNÇÕES DA INTERFACE (Esqueleto com ações)
+# FUNÇÕES DA INTERFACE (Fios Conectados)
 # ==========================================
 def atualizar_status():
     """Lê a memória para saber quem é o cliente atual e atualiza o painel"""
@@ -27,20 +29,55 @@ def atualizar_status():
         var_status.set("Alvo Atual: Nenhum projeto ativo")
 
 def acao_iniciar():
-    messagebox.showinfo("Aviso", "Aqui vamos plugar o iniciar_projeto.py")
+    # Dispara o script de inicialização sem travar o painel
+    caminho_script = os.path.join(diretorio_ferramentas, "iniciar_projeto.py")
+    if os.path.exists(caminho_script):
+        subprocess.Popen([sys.executable, caminho_script])
+    else:
+        messagebox.showerror("Erro de Rota", "O arquivo 'iniciar_projeto.py' não foi encontrado.")
 
 def acao_abrir_pasta():
-    messagebox.showinfo("Aviso", "Aqui vamos plugar o atalho da pasta")
+    # Lê a memória e manda o Windows abrir a pasta
+    try:
+        with open(caminho_memoria, "r", encoding="utf-8") as f:
+            pasta_atual = f.read().strip()
+        
+        if os.path.exists(pasta_atual):
+            os.startfile(pasta_atual)
+        else:
+            messagebox.showwarning("Aviso", "A pasta do cliente não existe mais ou foi movida.")
+    except FileNotFoundError:
+        messagebox.showwarning("Aviso", "Nenhum projeto ativo na memória.")
 
 def acao_ligar_ahk():
-    messagebox.showinfo("Aviso", "Aqui vamos plugar o obter_html.ahk")
+    # Dá um "clique duplo" no script AHK para armar os atalhos F11 e os faxineiros
+    caminho_script = os.path.join(diretorio_ferramentas, "obter_html.ahk")
+    if os.path.exists(caminho_script):
+        os.startfile(caminho_script)
+        # Bipe curto apenas para confirmar que ligou
+        import winsound
+        winsound.Beep(1000, 200) 
+    else:
+        messagebox.showerror("Erro de Rota", "O arquivo 'obter_html.ahk' não foi encontrado.")
 
 def acao_abrir_gemini():
-    # Bônus de engenharia: O botão já abre o navegador no Gemini para você
+    # 1. Arma os atalhos do Gemini silenciosamente no Windows
+    caminho_script = os.path.join(diretorio_ferramentas, "assistente_gemini.ahk")
+    if os.path.exists(caminho_script):
+        os.startfile(caminho_script)
+    else:
+        messagebox.showwarning("Aviso", "O script 'assistente_gemini.ahk' não foi encontrado. Os atalhos podem não funcionar.")
+
+    # 2. Abre o navegador na sua conta
     webbrowser.open("https://gemini.google.com/app/2267c167a9509945")
 
 def acao_gerar_pdf():
-    messagebox.showinfo("Aviso", "Aqui vamos plugar o gerar_relatorios.py")
+    # Dispara o motor de relatório
+    caminho_script = os.path.join(diretorio_ferramentas, "gerar_relatorios.py")
+    if os.path.exists(caminho_script):
+        subprocess.Popen([sys.executable, caminho_script])
+    else:
+        messagebox.showerror("Erro de Rota", "O arquivo 'gerar_relatorios.py' não foi encontrado.")
 
 # ==========================================
 # CONSTRUÇÃO DO PAINEL (Interface minimalista)
@@ -49,7 +86,6 @@ root = tk.Tk()
 root.title("Semmler Micro-Automações - Painel Mestre")
 
 # --- Centralização Cirúrgica da Janela ---
-# Aumentamos a altura para 580 para acomodar o novo passo perfeitamente
 largura_janela = 480
 altura_janela = 580
 largura_tela = root.winfo_screenwidth()
