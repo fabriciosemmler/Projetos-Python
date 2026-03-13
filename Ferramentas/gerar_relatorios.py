@@ -47,6 +47,7 @@ def gerar_relatorio(pasta_alvo):
     # ==========================================
     caminho_pdf = os.path.join(pasta_alvo, f"Relatorio_{cliente}.pdf")
     caminho_txt = os.path.join(pasta_alvo, "reviews_concorrentes.txt")
+    caminho_whatsapp = os.path.join(pasta_alvo, f"Relatorio_{cliente}_WhatsApp.txt")
     
     # NOVIDADE: A rota do texto humano final
     caminho_redacao = os.path.join(pasta_alvo, "redacao_final.txt")
@@ -79,12 +80,42 @@ def gerar_relatorio(pasta_alvo):
     match_elogiado = re.search(r'= MAIS ELOGIADO =(.*?)(?== MAIS CRITICADO =|$)', texto_redacao, re.DOTALL)
     match_criticado = re.search(r'= MAIS CRITICADO =(.*?)(?=$)', texto_redacao, re.DOTALL)
 
-    # Limpa espaços em branco nas pontas e converte as quebras de linha para HTML (<br>)
-    insights_html = match_insights.group(1).strip().replace('\n', '<br>') if match_insights else "Dados de Insights ausentes."
-    elogiado_html = match_elogiado.group(1).strip().replace('\n', '<br>') if match_elogiado else "Dados de Elogios ausentes."
-    criticado_html = match_criticado.group(1).strip().replace('\n', '<br>') if match_criticado else "Dados de Críticas ausentes."
+    # Extrai o texto puro para o WhatsApp
+    insights_wa = match_insights.group(1).strip() if match_insights else "Dados de Insights ausentes."
+    elogiado_wa = match_elogiado.group(1).strip() if match_elogiado else "Dados de Elogios ausentes."
+    criticado_wa = match_criticado.group(1).strip() if match_criticado else "Dados de Críticas ausentes."
 
-    print("Lendo o molde HTML...")
+    # Prepara a versão com HTML (<br>) exclusivamente para o PDF
+    insights_html = insights_wa.replace('\n', '<br>')
+    elogiado_html = elogiado_wa.replace('\n', '<br>')
+    criticado_html = criticado_wa.replace('\n', '<br>')
+
+    # ==========================================
+    # MÓDULO RESTAURADO: GERAÇÃO DO WHATSAPP
+    # ==========================================
+    print("Gerando versão otimizada para WhatsApp...")
+    
+    texto_whatsapp = f"""*Relatório de Inteligência de Mercado*
+*Cliente:* {cliente}
+*Amostragem:* {amostragem} avaliações extraídas.
+
+*Insights Estratégicos*
+{insights_wa}
+
+*Tópico Mais Elogiado*
+{elogiado_wa}
+
+*Tópico Mais Criticado*
+{criticado_wa}
+
+_Tecnologia e Automação por Semmler Micro-Automações_"""
+
+    # Salva o texto pronto na pasta do cliente
+    with open(caminho_whatsapp, 'w', encoding='utf-8') as f:
+        f.write(texto_whatsapp)
+
+
+    print("Lendo o molde HTML para o PDF...")
     
     if not os.path.exists(caminho_template):
         print("Erro: O arquivo 'template.html' não foi encontrado na pasta de ferramentas.")
