@@ -1,8 +1,8 @@
 import re
 import os
+import glob
+import configparser
 import pdfkit
-import tkinter as tk
-from tkinter import filedialog
 from pypdf import PdfReader
 
 # ==========================================
@@ -10,11 +10,14 @@ from pypdf import PdfReader
 # ==========================================
 
 # ==========================================
-# CONTEÚDO DO RELATÓRIO
+# CONTEÚDO DO RELATÓRIO (SISTEMA HÍBRIDO)
 # ==========================================
-cliente = "Acqua Lavanderia Express"
+# Variáveis de sistema (agora preenchidas automaticamente)
+cliente = ""
 amostragem = ""
-tipo_negocio = "escolas de idiomas"
+tipo_negocio = ""
+
+# Textos gerados pela Inteligência Artificial
 insights = "• A humanização do atendimento presencial e a didática dos professores são os maiores retentores de alunos, com profissionais como Camila, Ricardo e Álvaro sendo elogiados nominalmente.<br><br>• A comunicação digital é um gargalo na concorrência, pois mensagens ignoradas no WhatsApp e esperas infinitas no telefone geram forte frustração.<br><br>• A desorganização administrativa, como atrasos de material didático e reajustes surpresa nas rematrículas, impulsiona o cancelamento repentino de contratos."
 elogiado = "O fator humano é o ponto mais forte das escolas concorrentes. Os clientes valorizam professores engajados e metodologias dinâmicas que criam um ambiente acolhedor. O atendimento presencial ágil no momento da matrícula recebe muitos destaques positivos, assim como a boa infraestrutura física e a limpeza das instalações."
 criticado = "A maior falha do mercado local reside na gestão administrativa e no suporte remoto. Os clientes relatam profunda frustração com o atendimento via WhatsApp e telefone, sentindo-se ignorados ao tentarem cancelar matrículas ou resolver problemas urgentes. A quebra de expectativa financeira com reajustes abusivos e a falta de organização para entrega de materiais pagos geram a maioria das avaliações destrutivas."
@@ -29,8 +32,24 @@ caminho_wkhtmltopdf = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe'
 configuracao = pdfkit.configuration(wkhtmltopdf=caminho_wkhtmltopdf)
 
 def gerar_relatorio(pasta_alvo):
-    global amostragem # Permite reescrever a variável vazia lá do topo
-    global tipo_negocio
+    global cliente, amostragem, tipo_negocio 
+
+    # ==========================================
+    # NOVIDADE: Leitura Dinâmica do INI
+    # ==========================================
+    print("Lendo as diretrizes do projeto...")
+    arquivos_ini = glob.glob(os.path.join(pasta_alvo, "projeto*.ini"))
+    if arquivos_ini:
+        config = configparser.ConfigParser()
+        config.read(arquivos_ini[0], encoding='utf-8')
+        if config.has_section("PROJETO"):
+            # A função .get() com fallback garante que o script não quebre se a chave mudar
+            cliente = config.get("PROJETO", "nome", fallback=config.get("PROJETO", "cliente", fallback="Cliente_Sem_Nome"))
+            tipo_negocio = config.get("PROJETO", "ramo", fallback=config.get("PROJETO", "tipo_negocio", fallback="ramo não informado"))
+    else:
+        print("Aviso: 'projeto*.ini' não encontrado na pasta do cliente.")
+        cliente = "Cliente_Desconhecido"
+        tipo_negocio = "ramo não informado"
 
     # ==========================================
     # ROTAS DIRECIONADAS PARA A PASTA DO CLIENTE
@@ -149,22 +168,22 @@ _Tecnologia e Automação por Semmler Automações_"""
             break # Se der erro no motor wkhtmltopdf, para tudo para não ficar travado
 
 # ==========================================
-# GATILHO DE EXECUÇÃO COM INTERFACE
+# GATILHO DE EXECUÇÃO AUTOMÁTICO
 # ==========================================
 if __name__ == "__main__":
-    # Inicia a janela invisível e força ela para a frente de tudo
-    root = tk.Tk()
-    root.withdraw()
-    root.attributes('-topmost', True)
+    caminho_memoria = os.path.join(diretorio_raiz, "memoria_pasta.txt")
     
-    # Abre o seletor pedindo a pasta principal do cliente
-    pasta_selecionada = filedialog.askdirectory(title="Selecione a pasta do cliente para salvar o Relatório")
-    
-    # Limpa a memória da janela
-    root.destroy()
-    
-    # Se uma pasta foi escolhida, dispara o motor
-    if pasta_selecionada:
-        gerar_relatorio(pasta_selecionada)
-    else:
-        print("Operação cancelada.")
+    try:
+        # Lê o caminho da pasta do cliente salvo na memória
+        with open(caminho_memoria, "r", encoding="utf-8") as f:
+            pasta_selecionada = f.read().strip()
+        
+        # Se a pasta existir no disco, dispara o motor
+        if os.path.exists(pasta_selecionada):
+            print(f"Iniciando a geração do relatório para a pasta:\n{pasta_selecionada}\n")
+            gerar_relatorio(pasta_selecionada)
+        else:
+            print(f"Erro: A pasta do cliente registrada não existe no computador: {pasta_selecionada}")
+            
+    except FileNotFoundError:
+        print("Erro: Arquivo 'memoria_pasta.txt' não encontrado. Você precisa rodar as etapas anteriores primeiro.")
