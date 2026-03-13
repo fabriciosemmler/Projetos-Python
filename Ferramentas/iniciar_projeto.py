@@ -37,7 +37,7 @@ def salvar_e_iniciar():
 
         # --- MUDANÇA CIRÚRGICA: Criação do Banco de Dados INI ---
         config = configparser.ConfigParser()
-        config[f'PROJETO {cliente}'] = {
+        config['PROJETO'] = {
             'cliente': cliente,
             'ramo': ramo,
             'cidade': cidade
