@@ -36,10 +36,16 @@ F19:: {
         return
     }
 
-    ; Extrai o ramo de atuação diretamente do INI (sem pop-ups)
-    ramo_cliente := IniRead(caminho_ini, "PROJETO", "ramo", "ERRO")
+    ; ==========================================
+    ; AJUSTE CIRÚRGICO: Leitura do INI com blindagem UTF-8
+    ; ==========================================
+    ; Lê o arquivo inteiro forçando a lente correta (UTF-8)
+    conteudo_ini := FileRead(caminho_ini, "UTF-8")
     
-    if (ramo_cliente = "ERRO" or ramo_cliente = "") {
+    ; Pescador RegEx: Procura a linha "ramo = " e captura o que vem depois
+    if RegExMatch(conteudo_ini, "im)^ramo\s*=\s*(.*)", &captura) {
+        ramo_cliente := Trim(captura[1])
+    } else {
         MsgBox("O ramo não foi encontrado no arquivo INI.", "Erro de Leitura", "IconX")
         return
     }
