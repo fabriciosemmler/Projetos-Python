@@ -1,0 +1,16 @@
+*Relatório de Inteligência de Mercado*
+*Cliente:* Acqua Lavanderia Express
+*Amostragem:* 437 avaliações extraídas.
+
+*Insights Estratégicos*
+- A infraestrutura física dita a retenção: Espaços limpos, climatizados e com facilidades como Wi-Fi são essenciais. O oposto, como locais quentes, abafados e com mofo, causa repulsa imediata.
+- O suporte remoto é o ponto de virada: A agilidade em resolver falhas operacionais e estornar valores via WhatsApp define se o cliente volta. O silêncio da empresa gera sensação de roubo e avaliações destrutivas.
+- O poder da percepção de qualidade: Roupas entregues com perfume agradável e duradouro, além do cuidado no manuseio de peças sensíveis (e a conveniência do leva e traz), destacam as operações de sucesso.
+
+*Tópico Mais Elogiado*
+A união de praticidade com conforto é o aspecto mais valorizado pelos clientes. Eles exaltam espaços modernos, limpos e climatizados para aguardar a lavagem, elogiando a presença de comodidades como Wi-Fi e tomadas. O resultado final das roupas recebe enorme destaque, especialmente a limpeza profunda e o perfume duradouro proporcionado pela utilização de produtos de alta qualidade. O atendimento humano também é um grande diferencial, seja pela simpatia e proatividade de funcionários no local, pela eficiência pontual do sistema de delivery, ou pela resolução instantânea de dúvidas no suporte online.
+
+*Tópico Mais Criticado*
+A falta de manutenção do espaço físico lidera as queixas, com clientes descrevendo algumas lojas como verdadeiras saunas por falta de ar condicionado, além de relatarem máquinas sujas com cabelos, paredes mofadas e vazamentos no chão. A ineficiência dos equipamentos, que frequentemente entregam roupas úmidas após ciclos completos de secagem ou que chegam a rasgar peças caras como edredons, gera profunda indignação. Esse sentimento de lesão ao consumidor atinge o seu limite máximo quando a empresa se omite, ignorando chamados urgentes no WhatsApp e negando o estorno do dinheiro perdido em máquinas quebradas.
+
+_Tecnologia e Automação por Semmler Micro-Automações_
