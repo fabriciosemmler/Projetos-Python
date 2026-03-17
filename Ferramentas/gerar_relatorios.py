@@ -108,7 +108,7 @@ def gerar_relatorio(pasta_alvo):
 *Tópico Mais Criticado*
 {criticado_wa}
 
-_Tecnologia e Automação por Semmler Micro-Automações_"""
+_Tecnologia e Automação por Semmler Automações_"""
 
     # Salva o texto pronto na pasta do cliente
     with open(caminho_whatsapp, 'w', encoding='utf-8') as f:
