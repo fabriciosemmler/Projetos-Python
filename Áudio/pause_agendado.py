@@ -24,12 +24,14 @@ def exibir_aviso_grande(texto):
     
     threading.Thread(target=criar_gui, daemon=True).start()
 
-DEEZER_ID = "com.deezer.deezer-desktop"
-
 async def obter_sessao():
     manager = await GlobalSystemMediaTransportControlsSessionManager.request_async()
     sessoes = manager.get_sessions()
-    return next((s for s in sessoes if s.source_app_user_model_id == DEEZER_ID), None)
+    # Abordagem cirúrgica: localiza qualquer processo de mídia que contenha "spotify" no nome
+    for s in sessoes:
+        if s.source_app_user_model_id and "spotify" in s.source_app_user_model_id.lower():
+            return s
+    return None
 
 async def executar_pausa():
     sessao = None
