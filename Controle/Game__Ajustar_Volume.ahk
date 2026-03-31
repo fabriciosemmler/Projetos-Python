@@ -1,6 +1,9 @@
 #Requires AutoHotkey v2.0
 #SingleInstance Force
 
+; Monitor para os gatilhos analógicos (Modo Xbox/Steam)
+SetTimer MonitorarGatilhosXbox, 100
+
 ; ---------------------------------------------------------
 ; MÓDULO CONTROLE (DualShock 4)
 ; L1 = Joy5 | R1 = Joy6
@@ -25,5 +28,20 @@ Joy8::
     while GetKeyState("Joy7") and GetKeyState("Joy8") {
         Send("{Volume_Up}")
         Sleep(100) 
+    }
+}
+
+; ---------------------------------------------------------
+; MÓDULO XINPUT (Gatilhos Xbox via Steam)
+; LT = Eixo Z | RT = Eixo R
+; ---------------------------------------------------------
+MonitorarGatilhosXbox() {
+    ; Lê a posição dos eixos analógicos (escala de 0 a 100)
+    EixoZ := GetKeyState("JoyZ")
+    EixoR := GetKeyState("JoyR")
+    
+    ; O repouso costuma ser 0 ou 50. Se ambos passarem de 70, entende-se como gatilho apertado.
+    if (EixoZ > 70) and (EixoR > 70) {
+        Send("{Volume_Up}")
     }
 }
