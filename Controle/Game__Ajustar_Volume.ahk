@@ -36,12 +36,15 @@ Joy8::
 ; LT = Eixo Z | RT = Eixo R
 ; ---------------------------------------------------------
 MonitorarGatilhosXbox() {
-    ; Lê a posição dos eixos analógicos (escala de 0 a 100)
+    ; Lê a posição dos eixos analógicos
     EixoZ := GetKeyState("JoyZ")
     EixoR := GetKeyState("JoyR")
     
-    ; O repouso costuma ser 0 ou 50. Se ambos passarem de 70, entende-se como gatilho apertado.
-    if (EixoZ > 70) and (EixoR > 70) {
-        Send("{Volume_Up}")
+    ; TRAVA DE SEGURANÇA: Blinda o código para só calcular se o controle estiver ativo e enviando números
+    if IsNumber(EixoZ) and IsNumber(EixoR) {
+        ; O repouso costuma ser 0 ou 50. Se ambos passarem de 70, entende-se como gatilho apertado.
+        if (EixoZ > 70) and (EixoR > 70) {
+            Send("{Volume_Up}")
+        }
     }
 }
