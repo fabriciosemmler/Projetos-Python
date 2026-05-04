@@ -1,0 +1,121 @@
+document.addEventListener('DOMContentLoaded', function() {
+    var svgObjeto = document.getElementById('svg-mapa-objeto');
+    if (!svgObjeto) {
+        console.log("Objeto SVG não encontrado");
+        return;
+    }
+
+    function aplicarAnimacao() {
+        var svgDoc = null;
+        
+        // Tenta acessar o documento SVG
+        try {
+            svgDoc = svgObjeto.contentDocument;
+        } catch (e) {
+            console.log("Erro ao acessar contentDocument:", e);
+            return false;
+        }
+
+        if (!svgDoc) {
+            console.log("SVG document ainda não disponível");
+            return false;
+        }
+
+        // Determinar a região com base na URL
+        var url = window.location.href;
+        var regiao = null;
+        
+        if (url.indexOf("/concursos/norte/") > -1) regiao = "mapa-norte";
+        else if (url.indexOf("/concursos/nordeste/") > -1) regiao = "mapa-nordeste";
+        else if (url.indexOf("/concursos/centrooeste/") > -1) regiao = "mapa-centro-oeste";
+        else if (url.indexOf("/concursos/sudeste/") > -1) regiao = "mapa-sudeste";
+        else if (url.indexOf("/concursos/sul/") > -1) regiao = "mapa-sul";
+
+        // Adicionar a classe se encontrou a região
+        if (regiao) {
+            var elemento = svgDoc.getElementById(regiao);
+            if (elemento) {
+                elemento.classList.add("piscando");
+                console.log("Animação aplicada à região:", regiao);
+                return true;
+            } else {
+                console.log("Elemento não encontrado:", regiao);
+            }
+        }
+        
+        return false;
+    }
+
+    // Múltiplas estratégias para garantir que funcione
+    
+    // 1. Tenta imediatamente (caso já esteja carregado do cache)
+    setTimeout(function() {
+        if (aplicarAnimacao()) {
+            return; // Sucesso, não precisa tentar mais
+        }
+        
+        // 2. Se não funcionou, escuta o evento load
+        svgObjeto.addEventListener('load', function() {
+            setTimeout(aplicarAnimacao, 100); // Pequeno delay para garantir
+        });
+        
+        // 3. Fallback com polling (tenta a cada 100ms por até 3 segundos)
+        var tentativas = 0;
+        var maxTentativas = 30;
+        var intervalo = setInterval(function() {
+            tentativas++;
+            if (aplicarAnimacao() || tentativas >= maxTentativas) {
+                clearInterval(intervalo);
+                if (tentativas >= maxTentativas) {
+                    console.log("Timeout: não foi possível aplicar animação ao SVG");
+                }
+            }
+        }, 100);
+        
+    }, 50); // Pequeno delay inicial
+    
+    // 4. Força refresh se necessário (último recurso)
+    // Descomente se ainda tiver problemas:
+    /*
+    setTimeout(function() {
+        if (!svgObjeto.contentDocument) {
+            console.log("Forçando reload do SVG...");
+            var currentData = svgObjeto.data;
+            svgObjeto.data = currentData + "?t=" + Date.now();
+        }
+    }, 2000);
+    */
+});
+
+
+
+/*
+document.addEventListener('DOMContentLoaded', function() {
+    var svgObjeto = document.getElementById('svg-mapa-objeto');
+    if (!svgObjeto) {
+        console.log("Objeto SVG não encontrado");
+        return;
+    }
+    if (svgObjeto) {
+        // Espere o SVG carregar
+        svgObjeto.addEventListener('load', function() {
+            var svgDoc = this.contentDocument;
+            // Determinar a regiao com base na URL
+            var url = window.location.href;
+            var regiao = null;
+            if (url.indexOf("/concursos/norte/") > -1) regiao = "mapa-norte";
+            else if (url.indexOf("/concursos/nordeste/") > -1) regiao = "mapa-nordeste";
+            else if (url.indexOf("/concursos/centrooeste/") > -1) regiao = "mapa-centro-oeste";
+            else if (url.indexOf("/concursos/sudeste/") > -1) regiao = "mapa-sudeste";
+            else if (url.indexOf("/concursos/sul/") > -1) regiao = "mapa-sul";
+            // Adicionar a classe se encontrou a regiao
+            if (regiao) {
+                var elemento = svgDoc.getElementById(regiao);
+                if (elemento) {
+                    elemento.classList.add("piscando");
+                }
+            }
+        });
+    }
+});
+*/

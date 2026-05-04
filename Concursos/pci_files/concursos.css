@@ -1,0 +1,136 @@
+#btn-concursos { margin:0; padding:0; height:135px; }
+#btn-concursos ul { margin:0; padding:0; font:normal 13px/13px "Inter", sans-serif; color:#000000; }
+#btn-concursos ul.btn-concursos-ul { margin-top:10px; }
+#btn-concursos ul.btn-concursos-ul li a { display:block; border:1px solid #205c98; border-radius:15px; float:left; margin-right:10px; margin-top:10px; padding:5px 7px; font-size:15px; line-height:20px; color:#205c98; }
+#btn-concursos ul.btn-concursos-ul li a:hover { background-color:#f7f8f8; text-decoration: none; }
+
+#concursos ul.regioes { list-style: none; padding: 10px 0; margin: 15px 0; text-align: center; }
+#concursos ul.regioes li { display:inline-block; }
+#concursos ul.regioes li a { display:block; background:#ffffff; border:1px solid #bec9d1; border-radius:5px; margin:8px 8px 0 0; padding:10px 12px; font:bold 14px/14px "Inter", sans-serif; color:#205c98; }
+#concursos ul.regioes li a:hover { text-decoration: none; border: 1px solid #8095a4; color: #000000; }
+
+#concursos ul.estados { list-style:none; padding:0; margin:10px 0 20px 0; text-align:center; }
+#concursos ul.estados li { display:inline; }
+#concursos ul.estados li a { border-bottom:1px solid #bec9d1; margin:0 1px 0 0; padding:1px 1px; font:bold 13px/13px "Inter", sans-serif; color:#205c98; }
+#concursos ul.estados li a:hover { text-decoration:none; border-bottom:1px solid #8095a4; color:#000000; }
+
+#concursos ul.ul_estados { list-style:none; padding:0; margin:0 0 20px 0; text-align:center; }
+#concursos ul.ul_estados li { display:inline-block; }
+#concursos ul.ul_estados li a { display:block; border-radius:3px; border:1px solid #bec9d1; margin:5px 1px 0 0; padding:8px; font:bold 14px/13px "Inter", sans-serif; color:#205c98; }
+#concursos ul.ul_estados li a:hover { text-decoration:none; border-bottom:1px solid #8095a4; color:#000000; }
+
+
+#concursos h2 {
+    border: 0 none;
+    padding: 15px 0;
+    margin:10px 0 10px 0;
+    background:none;
+    background-size:100% 1px;
+    background-image: linear-gradient(to right, transparent, #205c98, #205c98, transparent), linear-gradient(to right, transparent, #205c98, #205c98, transparent);
+    background-position:top, bottom;
+    background-repeat:no-repeat;
+    font: bold 28px/36px "Inter", sans-serif;
+    text-align: center;
+}
+#concursos .clear { clear:both; }
+#concursos .ua {
+    margin-top:20px;
+    padding:7px 15px 7px 0;
+    background: linear-gradient(to bottom, #e6ecf2 0%, #f2f5f8 50%, #eaedf1 100%);
+    border:1px solid #c8d2dd;
+    border-radius:7px;
+    text-align:right; font:bold 13px verdana,arial,sans-serif;
+    color:#205c98;
+}
+#concursos .uf { float:left; margin-left: 10px; }
+#concursos .uc { float:right; }
+#concursos .ud { clear:both; }
+#concursos .ea, #concursos .da, #concursos .na { border-bottom:1px solid #ffffff;  border-radius:7px; padding-left:5px; }
+#concursos .ea { background:#eff1f8; }
+#concursos .da { background:#eee8cd; }
+#concursos .na { background:#dde2ee; }
+#concursos .ea:hover { background:#ebedf5; }
+#concursos .da:hover { background:#ebe4c5; }
+#concursos .na:hover { background:#d6dceb; }
+#concursos .ca {
+    padding:0;
+    margin:0;
+    font:14px verdana,arial,sans-serif;
+    color:#666666;
+}
+#concursos .ca a { padding:9px 7px 9px 7px; font-weight:bold; text-decoration:none; color:#484848; }
+#concursos .cb { float:left; width:270px; padding:0 5px; min-height:50px; }
+#concursos .cb a { padding:0; }
+#concursos .cc { float:left; width:35px; padding:0 5px; text-align:center; border-left:1px solid #ffffff; border-right:1px solid #ffffff; line-height: 48px; min-height:52px; }
+#concursos .cd { float:left; width:245px;  padding:0 5px 0 15px; min-height:52px; }
+#concursos .cd a { padding:0; }
+#concursos .ce { float:right; width:110px; padding:0 0 0 13px; border-left:1px solid #ffffff; min-height:52px; }
+#concursos .ce span { float:none; vertical-align:middle; display:table-cell; height:48px; }
+#concursos .cd span { color:#205c98; }
+#concursos .cd span span { color:#666666; }
+#concursos .eduf { display:none; }
+#concursos .ca img {
+    padding: 0;
+    width:50px;
+    height:auto;
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+}
+#concursos .ca:hover img {
+   opacity: 0.8;
+}
+#concursos .ca .l_ap {
+    position:absolute;
+    border:1px solid #205c98;
+    font:bold 9px verdana,arial,sans-serif;
+    margin:3px 10px;
+    padding:2px 4px;
+    color:#205c98;
+}
+#concursos .ca .l_ap:hover {
+    border:1px solid #205c98;
+    background: #205c98;
+    color:#ffffff;
+}
+#concursos span.l_ap2 {
+    display: block;
+    margin: 10px 0 18px 5px;
+}
+#concursos span.l_ap2 a {
+    border:1px solid #205c98;
+    font:bold 11px Inter, Arial, sans-serif;
+    padding:5px;
+    color:#205c98;
+    border-radius: 10px;
+}
+#concursos span.l_ap2 a:hover {
+    border:1px solid #205c98;
+    background: #205c98;
+    color:#ffffff;
+    text-decoration: none;
+}
+
+@media screen and (max-width:768px) {
+    #concursos .cb { width:200px; }
+    #concursos ul.regioes { display:none; }
+    #concursos ul.estados { display:none; }
+    #concursos ul.ul_estados { display:block !important; }
+    #concursos .eduf { display:inline; }
+    #btn-concursos { display:none; }
+}
+
+@media screen and (max-width:718px) {
+    #concursos .cb { width: 150px; }
+    #concursos .cb .l_ap span { display:none; }
+}
+
+@media screen and (max-width:570px) {
+    #concursos .cb { padding: 0; padding-left: 5px; display:block; width: 45px; min-height: 70px; }
+    #concursos .ca a { padding:9px 7px 7px 9px; }
+    #concursos .ca img { padding:0; width: 35px; height: auto; }
+    #concursos .cb .l_ap { display:none; }
+    #concursos .cc { padding:0; border-left: 0 none; width: 27px; text-align: center; border-left: 1px solid #ffffff; border-right: 1px solid #ffffff; }
+    #concursos .cd { padding:0; padding-left:7px; width:200px; border-left:0 none; }
+    #concursos .ce { padding:0; padding-left:7px; width: 95px; }
+    #concursos .ce span { padding:0; }
+}

@@ -1,0 +1,11 @@
+function myClick(event) {
+    // if (event.target.tagName.toLowerCase()=='img' || event.target.tagName.toLowerCase()=='a') return false ;
+    let el = null;
+    if (event.target.closest('.na')) el = event.target.closest('.na');
+    else if (event.target.closest('.ea')) el = event.target.closest('.ea');
+    else el = event.target.closest('.da');
+    if (!el) return ;
+    let url = el.getAttribute('data-url');
+    if (event.ctrlKey) window.open(url,'_blank');
+    else window.location=url;
+}

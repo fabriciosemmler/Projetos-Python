@@ -1,0 +1,130 @@
+document.addEventListener("DOMContentLoaded", function() {
+    var lazyImages = [].slice.call(document.querySelectorAll("img.lazyload"));
+
+    if ("IntersectionObserver" in window) {
+        let lazyImageObserver = new IntersectionObserver(function(entries, observer) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    let lazyImage = entry.target;
+                    let src = lazyImage.getAttribute("data-src");
+                    
+                    if (src && src.trim() !== "") {
+                        // Adiciona classe de loading
+                        lazyImage.classList.add("loading");
+                        
+                        // Cria nova imagem para preload
+                        let newImage = new Image();
+                        
+                        newImage.onload = function() {
+                            // Sucesso - troca a imagem
+                            lazyImage.src = src;
+                            lazyImage.classList.remove("lazyload", "loading");
+                            lazyImage.classList.add("loaded");
+                        };
+                        
+                        newImage.onerror = function() {
+                            // Erro - mantem placeholder ou imagem de fallback
+                            lazyImage.classList.remove("loading");
+                            lazyImage.classList.add("error");
+                            console.warn("Erro ao carregar imagem:", src);
+                        };
+                        
+                        // Inicia o carregamento
+                        newImage.src = src;
+                        lazyImageObserver.unobserve(lazyImage);
+                    }
+                }
+            });
+        }, {
+            // Carrega quando a imagem estiver 50px antes de aparecer
+            rootMargin: "300px 0px",
+            threshold: 0.01
+        });
+
+        lazyImages.forEach(function(lazyImage) {
+            lazyImageObserver.observe(lazyImage);
+        });
+    } else {
+        // Fallback para navegadores antigos
+        function loadImagesInViewport() {
+            lazyImages.forEach(function(lazyImage) {
+                if (isInViewport(lazyImage)) {
+                    let src = lazyImage.getAttribute("data-src");
+                    if (src && src.trim() !== "") {
+                        lazyImage.src = src;
+                        lazyImage.classList.remove("lazyload");
+                        lazyImage.classList.add("loaded");
+                    }
+                }
+            });
+        }
+        
+        function isInViewport(element) {
+            const rect = element.getBoundingClientRect();
+            return (
+                rect.top >= 0 &&
+                rect.left >= 0 &&
+                rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+                rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+            );
+        }
+        
+        // Carrega imagens no scroll
+        window.addEventListener('scroll', loadImagesInViewport);
+        window.addEventListener('resize', loadImagesInViewport);
+        loadImagesInViewport(); // Carrega as que ja estao visiveis
+    }
+});
+
+/*
+window.onload = function () {
+    var images = document.getElementsByTagName('img');
+    for (var i = 0; i < images.length; i++) {
+        var img = images[i];
+        var src = img.getAttribute('data-src');
+        if (!src || src.trim() === "") {
+            continue;
+        }
+        if (img.classList.contains('lazyload')) {
+            img.setAttribute('src', src);
+        }
+    }
+}
+*/
+
+/*
+document.addEventListener("DOMContentLoaded", function() {
+    var lazyImages = [].slice.call(document.querySelectorAll("img.lazyload"));
+
+    if ("IntersectionObserver" in window) {
+        let lazyImageObserver = new IntersectionObserver(function(entries, observer) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    let lazyImage = entry.target;
+                    let src = lazyImage.getAttribute("data-src");
+                    if (src && src.trim() !== "") {
+                        lazyImage.src = src;
+                        lazyImage.classList.remove("lazyload");
+                        lazyImageObserver.unobserve(lazyImage);
+                    }
+                }
+            });
+        });
+
+        lazyImages.forEach(function(lazyImage) {
+            lazyImageObserver.observe(lazyImage);
+        });
+    } else {
+        // Fallback para navegadores que não suportam IntersectionObserver
+        window.onload = function() {
+            lazyImages.forEach(function(lazyImage) {
+                let src = lazyImage.getAttribute("data-src");
+                if (src && src.trim() !== "") {
+                    lazyImage.src = src;
+                    lazyImage.classList.remove("lazyload");
+                }
+            });
+        };
+    }
+});
+*/
