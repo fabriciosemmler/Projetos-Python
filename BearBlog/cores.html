@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Paleta de Cores do Blog</title>
+<style>
+  :root {
+    /* Tema Claro */
+    --color-primary-light: #efd9ed;
+    --color-secondary-light: #f5f2f5;
+    --color-accent-light: #d4bcd2;
+    --color-bg-light: #fff;
+    --color-text-light: #444;
+    --color-link-light: #bea6bc;
+    --color-visited-light: #bca9ba;
+    --blink-color-light: #e7d5e8;
+    --code-bg-light: lightgray;
+    
+    /* Tema Escuro */
+    --color-primary-dark: #82677f;
+    --color-secondary-dark: #1a1840;
+    --color-accent-dark: #967d94;
+    --color-bg-dark: #17153B;
+    --color-text-dark: #E2E6F0;
+    --color-link-dark: #efd9eb;
+    --color-visited-dark: #d1b8cf;
+    --blink-color-dark: #bca9ba;
+    --code-bg-dark: #f0f0f0;
+  }
+
+  body { font-family: monospace; display: flex; gap: 2rem; padding: 2rem; background: #666; margin: 0; }
+  .board { padding: 2rem; border-radius: 8px; width: 350px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+  #light-board { background: #fff; color: #333; }
+  #dark-board { background: #17153B; color: #eee; }
+  .row { display: flex; align-items: center; gap: 1rem; margin-bottom: 0.8rem; }
+  .swatch { width: 35px; height: 35px; border: 1px solid rgba(128,128,128,0.5); border-radius: 4px; }
+</style>
+</head>
+<body>
+
+  <div id="light-board" class="board">
+    <h2>Tema Claro</h2>
+  </div>
+  
+  <div id="dark-board" class="board">
+    <h2>Tema Escuro</h2>
+  </div>
+
+  <script>
+    const colors = {
+      light: ['primary-light', 'secondary-light', 'accent-light', 'bg-light', 'text-light', 'link-light', 'visited-light', 'blink-color-light', 'code-bg-light'],
+      dark: ['primary-dark', 'secondary-dark', 'accent-dark', 'bg-dark', 'text-dark', 'link-dark', 'visited-dark', 'blink-color-dark', 'code-bg-dark']
+    };
+
+    for (const theme in colors) {
+      const board = document.getElementById(`${theme}-board`);
+      colors[theme].forEach(name => {
+        board.innerHTML += `<div class="row"><div class="swatch" style="background: var(--color-${name})"></div>--color-${name}</div>`;
+      });
+    }
+  </script>
+
+</body>
+</html>

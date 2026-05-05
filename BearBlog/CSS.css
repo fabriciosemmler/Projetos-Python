@@ -1,0 +1,830 @@
+
+      
+      
+    
+@font-face {
+  font-family: "Rubik";
+  src: url("https://bear-images.sfo2.cdn.digitaloceanspaces.com/avas/rubik-regular.ttf") format("truetype");
+  font-weight: 400; 
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Rubik";
+  src: url("https://bear-images.sfo2.cdn.digitaloceanspaces.com/avas/rubik-italic.ttf") format("truetype");
+  font-weight: 400; /* Normal */
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Rubik";
+  src: url("https://bear-images.sfo2.cdn.digitaloceanspaces.com/avas/rubik-light-1.ttf") format("truetype");
+  font-weight: 300; /* Light */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Rubik";
+  src: url("https://bear-images.sfo2.cdn.digitaloceanspaces.com/avas/rubik-medium-1.ttf") format("truetype");
+  font-weight: 500; /* Medium */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Rubik";
+  src: url("https://bear-images.sfo2.cdn.digitaloceanspaces.com/avas/rubik-bold-1.ttf") format("truetype");
+  font-weight: 700; /* Bold */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Modak";
+  src: url("https://avas.space/blog/fonts/Modak-Regular.ttf") format("truetype");
+  font-weight: 700; /* Bold */
+  font-style: normal;
+}
+
+/* Color Variables */
+:root {
+  --color-primary-light: #efd9ed;
+  --color-secondary-light: #f5f2f5;
+  --color-accent-light: #d4bcd2;
+  --color-bg-light: #fff;
+  --color-text-light: #444;
+  --color-link-light: #bea6bc;
+  --color-visited-light: #bca9ba;
+  --blink-color-light: #e7d5e8; /*Background color for the blinking rectangle behind the letter*/
+  --code-bg-light: lightgray;
+  
+  --color-primary-dark: #82677f;
+  --color-secondary-dark: #1a1840;
+  --color-accent-dark: #967d94;
+  --color-bg-dark: #17153B;
+  --color-text-dark: #E2E6F0;
+  --color-link-dark: #efd9eb;
+  --color-visited-dark: #d1b8cf;
+  --blink-color-dark: #bca9ba; /*Background color for the blinking rectangle behind the letter*/
+  --code-bg-dark: #f0f0f0;
+
+  --border-radius: 4px;
+  --transition-duration: 0.3s;
+}
+
+/* General Styles */
+body {
+  font-family: "Rubik", sans-serif;
+  font-weight: medium;
+  max-width: 47.5rem;
+  margin: 2.5rem auto;
+  letter-spacing: 0.015em;
+  padding: 0 0.625rem;
+  text-wrap: wrap; /* The wrap stuff is written in different ways because support is patchy?*/
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+main {
+  margin: auto;
+  padding: 0 1rem;
+}
+
+@view-transition {
+navigation: auto;
+}
+
+mark {
+  background: var(--color-primary-light);
+  border-radius: var(--border-radius);
+  padding: 0 3px 0 3px; 
+}
+
+/* Text Styles */
+p, li {
+  font-size: 1.2rem;
+}
+
+li {
+  line-height: 1.8;
+}
+
+p {
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+/* Links */
+nav a {
+  margin-left: 5px;
+  display: inline-block; 
+  transition: transform var(--transition-duration) ease;
+}
+
+a {
+  display: inline-block; 
+  transition: transform var(--transition-duration) ease;
+}
+
+a:hover, nav a:hover {
+  transform: translateY(-1.5px);
+  filter: brightness(0.6);
+}
+
+/*Custom Post List Stuff for showing meta_description right*/
+.chronological ul.embedded.blog-posts li {
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.chronological ul.embedded.blog-posts li {
+    display: flex;
+    flex-direction: column;
+}
+
+.chronological ul.embedded.blog-posts li {
+  position: relative;
+  padding-bottom: 0.625rem;
+}
+
+.chronological ul.embedded.blog-posts li p {
+  font-size: 0.875rem;
+  font-style: italic;
+  color: #484848;
+}
+
+.chronological ul.embedded.blog-posts li::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 10px;
+
+  background-color: #cfb5c8;
+  -webkit-mask-image: url("data:image/svg+xml,\
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 8'>\
+<path d='M0 4 C20 7 40 1 60 4 80 6 100 2 120 5 140 7 160 2 180 4' \
+stroke='black' stroke-width='1.3' fill='none'/>\
+</svg>");
+  mask-image: url("data:image/svg+xml,\
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 8'>\
+<path d='M0 4 C20 7 40 1 60 4 80 6 100 2 120 5 140 7 160 2 180 4' \
+stroke='black' stroke-width='1.3' fill='none'/>\
+</svg>");
+
+  -webkit-mask-repeat: repeat-x;
+  mask-repeat: repeat-x;
+}
+
+/* Headings */
+h1, h2, h3, h4 {
+  line-height: 1.2;
+  margin-top: 2.5rem;
+}
+
+h1 {
+  font-family: monospace; /*For some reason, since a little while, it doesn't work anymore if I only specify this for all headings above, so I have to do this for each h individually*/
+}
+
+h2 {
+  font-size: 2em;
+  margin: -0.625rem auto -0.1875rem auto;
+  font-family: monospace;
+}
+
+.title h1 {
+  display: none;
+}
+
+/* Preformatted Text */
+pre {
+  font-size: 0.875rem;
+  background-color: var(--code-bg-light);
+  border-radius: 10px;
+  padding: 1.25rem;
+  text-wrap: wrap; 
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.p {
+  color: green;
+}
+
+.n {
+  color: black;
+}
+
+/* Inputs and Textareas */
+input, textarea {
+  color: var(--color-text-light);
+  background-color: #e1dfdf;
+  border: 1px solid var(--color-text-light);
+}
+
+input[type="file"] {
+  background-color: unset;
+  border: unset;
+}
+
+/* Tables */
+.posts-table td {
+  padding: 2px;
+  border-bottom: 1px solid;
+}
+
+td {
+  vertical-align: top;
+}
+
+/* Blockquotes */
+blockquote {
+  margin: 1.2em 0;
+  padding: 0.2rem 1.5rem;
+  border-left: 0.25rem solid var(--color-accent-light);
+  background: var(--color-secondary-light);
+  border-radius: 10px;
+}
+
+
+/* Images */
+img {
+  max-width: 100%;
+  margin: auto;
+  display: block;
+}
+
+.post img {
+  border-radius: 15px;
+}
+/* Footnotes */
+
+.footnotes ol {
+  margin: 0;
+  padding-left: 1.7em;
+}
+
+.footnotes p {
+  font-size: 0.9rem;
+}
+
+.footnotes li {
+  font-size: 0.9rem;
+  color: gray;
+}
+
+.footnotes li p {
+  margin: 0;
+}
+
+.footnotes::before {
+  content: "References / Side Notes";
+  display: block;
+  margin-bottom: 0.4em;
+  font-size: 0.9rem;
+  letter-spacing: 0.1em;
+  color: gray;
+}
+
+/* Time */
+time {
+  padding: 0 0.3125rem;
+  border-radius: 3px;
+  background-color: var(--color-primary-light);
+  font-size: 0.875rem;
+}
+
+.home i {
+  padding-right: .5rem;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+}
+  
+#footer-directive img {
+  border-radius: 0;
+}
+
+/* Buttons */
+button {
+  background: unset;
+  border: unset;
+  cursor: pointer;
+  font-family: sans-serif;
+}
+
+/*Toast button stuff by Jeddacp.com*/
+.upvote-button svg { display: none; }
+.upvote-button { display: block !important; }
+
+.upvote-button::before {
+  content: "♡ Like this post ";
+  background: #f8f8f8;
+  color: black;
+  border: 1.2px solid gray;
+  padding: 1px 4px 2px;
+  border-radius: 4px;
+}
+.upvote-button:hover::before { background-color: #f8f8f8; }
+
+.upvote-button[disabled] { color: inherit !important; }
+.upvote-button[disabled]::before {
+  content: " ♥ Liked";
+  background: #dfdfdf;
+}
+
+.upvote-count {
+  display: none; 
+}
+
+.upvote-count { font-size: inherit }
+.upvote-count::before { content: " - "; }
+.upvote-count::after { content: " like(s)"; }
+
+/* Timeline by birming.com, modified */
+.timeline {
+  margin: 1.875rem 0;
+}
+
+.timeline ul {
+  padding-left: 0;
+  margin: 0;
+}
+
+.timeline li {
+  list-style: none;
+  margin-bottom: 1.5625rem;
+  padding: 2.5rem 1.25rem 1.25rem;
+  background: var(--color-bg-light);
+  border: 5px solid var(--color-secondary-light);
+  box-sizing: border-box;
+  position: relative;
+}
+
+.timeline h4 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 40px;
+  line-height: 40px;
+  margin: 0;
+  padding: 0 15px;
+  font-family: monospace;
+  letter-spacing: 1px;
+  background: var(--color-accent-light);
+  color: white;
+  box-sizing: border-box;
+  text-align: left;
+}
+
+.timeline li h4::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 15px;
+  transform: translateY(-50%);
+  height: 10px;
+  width: 10px;
+  background: var(--blink-color-light);
+  border-radius: 20%;
+  box-shadow:
+    -15px 0 var(--color-primary-light),
+    -30px 0 white;
+}
+
+/* CalenBear | robertbirming.com light mode */
+.cb-nav {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-block-end: 1.5rem;
+}
+
+.cb-nav button {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-size: 1rem;
+  color: var(--color-link-light);
+  line-height: 1;
+}
+
+@media (hover: hover) {
+  .cb-nav button:not([disabled]):hover {
+    color: var(--color-text-light);
+  }
+}
+
+.cb-nav button[disabled] {
+  opacity: 0.3;
+  cursor: default;
+}
+
+#cb-year {
+  font-size: 1rem;
+  color: var(--color-text-light);
+}
+
+#cb-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+  gap: 1rem;
+}
+
+.cb-month {
+  padding: 0.75rem;
+}
+
+.cb-month-name {
+  color: var(--color-text-light);
+  margin-block-end: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.cb-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1px;
+  text-align: center;
+}
+
+.cb-day-label {
+  font-size: 0.65rem;
+  color: var(--color-text-light);
+  padding-block: 2px;
+}
+
+.cb-day {
+  font-size: 0.7rem;
+  padding-block: 3px;
+  padding-inline: 1px;
+  border-radius: 3px;
+  color: var(--color-text-light);
+  line-height: 1.4;
+}
+
+.cb-day-empty {
+  visibility: hidden;
+}
+
+.cb-day-post {
+  background: color-mix(in srgb, var(--color-link-light) 12%, transparent);
+  color: var(--color-link-light);
+  font-weight: 500;
+  cursor: pointer;
+}
+
+@media (hover: hover) {
+  .cb-day-post:hover {
+    background: var(--color-link-light);
+    color: var(--color-bg-light);
+  }
+}
+
+
+/* Dotted postlists by Sylvia departure.blog, modified; currently unused 
+.home ul.blog-posts {
+  padding: unset;
+} 
+.home ul.blog-posts > li {
+  display: flex;
+  justify-content: space-between;
+  margin: 0.5em 0;
+  border-bottom: 1px dashed var(--color-text-light);
+}
+
+.home ul.blog-posts > li > span + a,
+.home ul.blog-posts > li > span:has(> i time) {
+  margin-bottom: -8px; 
+  background-color: var(--color-bg-light);
+}
+.home ul.blog-posts > li > span:has(> i time) {
+  white-space: nowrap;
+  padding-left: .3em;
+}
+.home ul.blog-posts > li > span + a {
+  padding-right: .3em;
+}*/
+
+/* Announcement bar by birming.com modified */
+.bar {
+  margin: 20px 0;
+  padding: 15px;
+  text-align: center;
+  font-size: .9em;
+  font-weight: 400;
+  text-shadow: 1px 2px 4px rgba(0,0,0,0.2);
+  border: 2px dashed #e7d5e8;
+  border-radius: 10px;
+}
+.bar a {
+  margin: 0;
+  padding: 0;
+  font-size: inherit;
+}
+
+/* Testimonials by bearming.com modified*/
+.testimonials {
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: 1.25rem;
+  column-gap: 1.25rem;
+  margin: 1.875rem 0;
+  font-size: .9em;
+}
+.testimonials blockquote {
+  width: 310px;
+  margin: 0;
+  border: 2px solid var(--color-link-light);
+  border-radius: 10px;
+}
+.testimonials p {
+ display: flex;
+ flex-direction: column;
+ margin: 0;
+}
+.testimonials p::before {
+  position: relative;
+  margin: 0 0 -15px;
+  content: "\275E";
+  font-size: 3em;
+  text-align: right;
+  color: var(--color-link-light);
+}
+.testimonials strong {
+  margin: 0.9375rem 0 1.25rem;
+  font-style: normal;
+}
+.testimonials strong::before {
+  margin-right: 8px;
+  content: "—";
+}
+
+/* Media Queries for lightmode and darkmode*/
+@media (prefers-color-scheme: light) {
+  body {
+    color: var(--color-text-light);
+    background: var(--color-bg-light);
+  }
+
+  a:link {
+    color: var(--color-link-light);
+  }
+
+  a:visited, ul.blog-posts li a:visited {
+    color: var(--color-visited-light);
+  }
+
+  .upvote-button.upvoted {
+    color: black;
+  }
+  
+/* Keyframe animation in my h2 title*/
+@keyframes cursor-blink {
+            50% {
+                content: "a";
+                color: var(--color-text-light);
+                background: none;
+            }
+
+            100% {
+                content: "a";
+                color: var(--color-text-light);
+                background: var(--blink-color-light);
+            }
+        }
+
+        nav h2::after {
+            content: "a";
+            color: var(--c);
+            height: 30px;
+            border-radius: 3px;
+            background: var(--blink-color-light);
+            display: inline-block;
+            animation: cursor-blink 1.0s steps(1) infinite;
+}
+}
+
+@media (max-width: 600px) {
+  body {
+    letter-spacing: 0.030em;
+  }
+
+  p,
+  li {
+    line-height: 1.9;
+  }
+  
+  p {
+    margin-bottom: 1.8rem;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --c: white; /* For blinking dark mode */
+  }
+  
+  body {
+    color: var(--color-text-dark);
+    background: var(--color-bg-dark);
+  }
+
+  a:link {
+    color: var(--color-link-dark);
+  }
+
+  a:visited, ul.blog-posts li a:visited {
+    color: var(--color-visited-dark);
+  }
+  
+/* CalenBear | robertbirming.com darkmode */
+.cb-nav button {
+  color: var(--color-link-dark);
+}
+
+@media (hover: hover) {
+  .cb-nav button:not([disabled]):hover {
+    color: var(--color-text-dark);
+  }
+}
+
+#cb-year {
+  font-size: 1rem;
+  color: var(--color-text-dark);
+}
+
+.cb-month-name {
+  color: var(--color-text-dark);
+}
+
+.cb-day-label {
+  color: var(--color-text-dark);
+}
+
+.cb-day {
+  color: var(--color-text-dark);
+}
+
+.cb-day-post {
+  background: color-mix(in srgb, var(--color-link-dark) 12%, transparent);
+  color: var(--color-link-dark);
+}
+
+@media (hover: hover) {
+  .cb-day-post:hover {
+    background: var(--color-link-dark);
+    color: var(--color-bg-dark);
+  }
+}
+  
+/* Dotted postlists by Sylvia departure.blog, modified, currently unused
+@media (prefers-color-scheme: dark) {
+  .home ul.blog-posts > li {
+    border-bottom-color: var(--color-text-dark);
+  }
+  
+  .home ul.blog-posts > li > span + a,
+  .home ul.blog-posts > li > span:has(> i time) {
+    background-color: var(--color-bg-dark);
+  }
+}
+  */
+  
+  blockquote {
+  border-left: 0.25rem solid var(--color-accent-dark);
+  background: #1f1d4f;
+}
+  
+    .footnotes li {
+  color: lightgray;
+}
+
+.footnotes::before {
+  color: lightgray;
+}
+  
+  .chronological ul.embedded.blog-posts li p {
+  font-size: 14px;
+  font-style: italic;
+  color: lightgrey;
+}
+  
+.chronological ul.embedded.blog-posts li::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 8px;
+  background-color: var(--color-link-light);
+
+  -webkit-mask-image: url("data:image/svg+xml,\
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 8'>\
+<path d='M0 4 C20 7 40 1 60 4 80 6 100 2 120 5 140 7 160 2 180 4' \
+stroke='black' stroke-width='1.3' fill='none'/>\
+</svg>");
+  mask-image: url("data:image/svg+xml,\
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 8'>\
+<path d='M0 4 C20 7 40 1 60 4 80 6 100 2 120 5 140 7 160 2 180 4' \
+stroke='black' stroke-width='1.3' fill='none'/>\
+</svg>");
+
+  -webkit-mask-repeat: repeat-x;
+  mask-repeat: repeat-x;
+}
+
+  input, textarea {
+    color: var(--color-text-dark);
+    background-color: #222;
+    border: 1px solid var(--color-text-dark);
+  }
+
+  time {
+    color: black;
+    background-color: #e7c7e5;
+  }
+  
+  pre {
+      background-color: var(--code-bg-dark);
+  }
+  
+  .upvote-count {
+    color: var(--color-text-dark); 
+  }
+
+  mark {
+    background: var(--color-primary-dark);
+    color: #f3f4f9;
+  }
+
+.timeline li {
+  background: var(--color-bg-dark);
+  border: 5px solid #211e4a;
+}
+
+.timeline h4 {
+  background: var(--color-accent-dark);
+  color: white;
+  box-sizing: border-box;
+  text-align: left;
+}
+
+.timeline li h4::after {
+  background: var(--blink-color-dark);
+  box-shadow:
+    -15px 0 var(--color-visited-dark),
+    -30px 0 var(--color-primary-dark);
+}
+  
+@media (max-width: 600px) and (prefers-color-scheme: dark) {
+  body {
+    color: #D6DBE8;
+  }
+}
+  
+/* Keyframe animation in my h2 title*/
+@keyframes cursor-blink {
+            50% {
+                content: "a";
+                color: var(--color-text-dark);
+                background: none;
+            }
+
+            100% {
+                content: "a";
+                color: var(--color-text-dark);
+                background: var(--blink-color-dark);
+            }
+        }
+
+        nav h2::after {
+            content: "a";
+            color: var(--color-text-dark);
+            height: 30px;
+            border-radius: 3px;
+            background: var(--blink-color-dark);
+            display: inline-block;
+            animation: cursor-blink 1.0s steps(1) infinite;
+}
+}
+    .upvote-button {
+        padding: 0;
+        margin: 0;
+        border: 0;
+        background-color: inherit;
+        color: inherit;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .upvote-button.upvoted {
+        color: salmon;
+    }
+    .upvote-count {
+        margin-top: -3px;
+    }
